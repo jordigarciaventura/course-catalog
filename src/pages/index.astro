@@ -1,34 +1,38 @@
 ---
-import Course from "@/components/Course.astro";
-import RandomSvgPattern from "@/components/RandomSvgPattern.astro";
-import Timeline from "@/components/Timeline.astro";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { CourseCard } from "@/components/CourseCard";
+import { LanguageSelect } from "@/components/LanguageSelect";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { CalendarIcon, Clock } from "@lucide/astro";
+import { useTranslation } from "@/i18n/useTranslation";
+import type { Language } from "@/types";
+import { Toggle } from "astro-theme-toggle";
+import { getAllCourses } from "@/lib/courseLoader";
 
-import { getCollection } from "astro:content";
+// Get all courses from the .tsx files
+const courses = await getAllCourses();
 
-const courseFiles = await getCollection("courses");
-const courses = courseFiles.flatMap((file) => file.data);
+// Get current language (defaulting to English for now)
+const currentLanguage: Language = "en";
+const t = useTranslation(currentLanguage);
 ---
 
 <BaseLayout>
     <div class="flex flex-col items-center">
         <div class="flex flex-col w-full max-w-4xl gap-8 p-8">
-            <h1>Courses</h1>
+            <div class="flex justify-between items-center">
+                <h1>{t("index.title")}</h1>
+                <Toggle style="width: 32px; height: 32px;" />
+                <LanguageSelect
+                    currentLanguage={currentLanguage}
+                    className="w-48"
+                    client:load
+                />
+            </div>
             <ul class="flex flex-col gap-4">
                 {
                     courses.map((course) => (
-                        <Course
-                            title={course.title}
-                            duration={course.duration}
-                            date={course.date}
+                        <CourseCard
+                            course={course}
+                            currentLanguage={currentLanguage}
                         />
                     ))
                 }
