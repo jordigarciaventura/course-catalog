@@ -8,13 +8,19 @@ import {
 } from "@/components/ui/card";
 import type { Language, Course } from "@/types";
 import { CategoryBadge } from "@/components/CategoryBadge";
+import { cn } from "@/lib/utils";
 
 interface Props {
     course: Course;
     currentLanguage: Language;
+    className?: string;
 }
 
-export const CourseCard: React.FC<Props> = ({ course, currentLanguage }) => {
+export const CourseCard: React.FC<Props> = ({
+    course,
+    currentLanguage,
+    className,
+}) => {
     const title = course.title[currentLanguage];
     const description = course.description[currentLanguage];
     const duration = course.duration;
@@ -22,8 +28,13 @@ export const CourseCard: React.FC<Props> = ({ course, currentLanguage }) => {
     const category = course.category;
 
     return (
-        <Card className="w-full max-w-sm rounded-xl shadow-md p-4">
-            <CardHeader className="p-0">
+        <Card
+            className={cn(
+                "w-full rounded-xl shadow-md p-4 flex flex-col",
+                className
+            )}
+        >
+            <CardHeader className="p-0 pb-4">
                 <CategoryBadge
                     courseCategory={category}
                     currentLanguage={currentLanguage}
@@ -58,7 +69,7 @@ export const CourseCard: React.FC<Props> = ({ course, currentLanguage }) => {
                 </div>
             </CardHeader>
 
-            <CardContent className="p-0">
+            <CardContent className="p-0 flex-1">
                 <CardDescription className="text-sm text-muted-foreground">
                     {description}
                 </CardDescription>
