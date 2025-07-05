@@ -34,7 +34,7 @@ export const CourseCard: React.FC<Props> = ({
                 className
             )}
         >
-            <CardHeader className="p-0 pb-4">
+            <CardHeader className="p-0">
                 <CategoryBadge
                     courseCategory={category}
                     currentLanguage={currentLanguage}
