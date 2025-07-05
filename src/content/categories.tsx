@@ -21,6 +21,7 @@ const categories: Category[] = [
             ca: "Ciència de Dades",
         },
         icon: <ChartColumnDecreasing />,
+        color: "emerald",
     },
     {
         id: "cloud-devops",
@@ -30,6 +31,7 @@ const categories: Category[] = [
             ca: "Núvol/DevOps",
         },
         icon: <Cloud />,
+        color: "sky",
     },
     {
         id: "programming",
@@ -39,6 +41,7 @@ const categories: Category[] = [
             ca: "Programació",
         },
         icon: <Code />,
+        color: "violet",
     },
     {
         id: "web-development",
@@ -48,6 +51,7 @@ const categories: Category[] = [
             ca: "Desenvolupament Web",
         },
         icon: <Globe />,
+        color: "blue",
     },
     {
         id: "ai-ml",
@@ -57,6 +61,7 @@ const categories: Category[] = [
             ca: "IA/ML",
         },
         icon: <Brain />,
+        color: "purple",
     },
     {
         id: "databases",
@@ -66,6 +71,7 @@ const categories: Category[] = [
             ca: "Bases de Dades",
         },
         icon: <Database />,
+        color: "orange",
     },
     {
         id: "mobile-development",
@@ -75,6 +81,7 @@ const categories: Category[] = [
             ca: "Desenvolupament Mòbil",
         },
         icon: <Smartphone />,
+        color: "pink",
     },
     {
         id: "game-development",
@@ -84,6 +91,7 @@ const categories: Category[] = [
             ca: "Desenvolupament de Jocs",
         },
         icon: <Gamepad2 />,
+        color: "red",
     },
     {
         id: "cybersecurity",
@@ -93,6 +101,7 @@ const categories: Category[] = [
             ca: "Ciberseguretat",
         },
         icon: <Shield />,
+        color: "yellow",
     },
     {
         id: "software-engineering",
@@ -102,6 +111,7 @@ const categories: Category[] = [
             ca: "Enginyeria de Programari",
         },
         icon: <Wrench />,
+        color: "slate",
     },
 ];
 

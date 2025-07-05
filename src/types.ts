@@ -2,17 +2,17 @@
  * Global type definitions for the course catalog application
  */
 
-import { courseCategories, languages, languageLabels } from '@/config';
+import { courseCategories, languages, languageLabels } from "@/config";
 
 /**
  * Available course categories - extracted from config
  */
-export type CourseCategory = typeof courseCategories[number];
+export type CourseCategory = (typeof courseCategories)[number];
 
 /**
  * Supported languages in the application - extracted from config
  */
-export type Language = typeof languages[number];
+export type Language = (typeof languages)[number];
 
 /**
  * Language labels type - extracted from config
@@ -27,12 +27,28 @@ export type MultilingualText = {
 };
 
 /**
+ * Supported color names for category badges
+ */
+export type CategoryColor =
+    | "emerald"
+    | "sky"
+    | "violet"
+    | "blue"
+    | "purple"
+    | "orange"
+    | "pink"
+    | "red"
+    | "yellow"
+    | "slate";
+
+/**
  * Category definition
  */
 export interface Category {
     id: CourseCategory;
     label: MultilingualText;
     icon: React.ReactElement;
+    color: CategoryColor; // Color name (shade will be applied by theme)
 }
 
 /**
