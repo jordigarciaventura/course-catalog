@@ -6,13 +6,41 @@ import { useTranslation } from "@/i18n/useTranslation";
 import type { Language } from "@/types";
 import { Toggle } from "astro-theme-toggle";
 import { getAllCourses } from "@/lib/courseLoader";
+import { getCurrentLanguageFromPath } from "@/lib/language";
+import { languages } from "@/config";
+
+// Get the language from the URL parameter (or undefined for default route)
+const { lang } = Astro.params;
+
+// Get current language from URL path
+const currentLanguage: Language = getCurrentLanguageFromPath(
+    Astro.url.pathname
+);
+
+// Validate the language parameter if it exists
+if (lang && !languages.includes(lang as Language)) {
+    return Astro.redirect("/404");
+}
 
 // Get all courses from the .tsx files
 const courses = await getAllCourses();
 
-// Get current language (defaulting to English for now)
-const currentLanguage: Language = "en";
+// Get translations for current language
 const t = useTranslation(currentLanguage);
+
+// Generate static paths for all supported languages
+export async function getStaticPaths() {
+    return [
+        // Default language route (no prefix)
+        { params: { lang: undefined } },
+        // All other language routes
+        ...languages
+            .filter((lang) => lang !== "en") // Exclude default language
+            .map((lang) => ({
+                params: { lang },
+            })),
+    ];
+}
 ---
 
 <BaseLayout>
@@ -23,11 +51,7 @@ const t = useTranslation(currentLanguage);
             <div class="flex justify-between items-center">
                 <h1>{t("index.title")}</h1>
                 <Toggle style="width: 32px; height: 32px;" />
-                <LanguageSelect
-                    currentLanguage={currentLanguage}
-                    className="w-48"
-                    client:load
-                />
+                <LanguageSelect className="w-48" client:load />
             </div>
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-max"

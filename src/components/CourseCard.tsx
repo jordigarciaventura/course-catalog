@@ -41,9 +41,9 @@ export const CourseCard: React.FC<Props> = ({
                 />
 
                 <div className="flex gap-4 items-center pt-4 pb-2">
-                    <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-2 size-16 flex items-center justify-center flex-shrink-0">
+                    <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-3 size-16 flex items-center justify-center flex-shrink-0">
                         <span
-                            className="size-12 [&>svg]:w-full [&>svg]:h-full"
+                            className="flex size-12 [&>svg]:w-full [&>svg]:h-full text-2xl items-center justify-center"
                             aria-hidden="true"
                         >
                             {course.icon}
