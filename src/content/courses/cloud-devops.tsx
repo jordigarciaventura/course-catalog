@@ -1,9 +1,4 @@
 import type { Course } from "@/types";
-import dockerImage from "@/icons/docker.png";
-import kubernetesImage from "@/icons/kubernetes.png";
-import awsImage from "@/icons/aws.png";
-import terraformImage from "@/icons/terraform.png";
-import jenkinsImage from "@/icons/jenkins.png";
 
 const courses: Course[] = [
     {
@@ -20,7 +15,7 @@ const courses: Course[] = [
         },
         date: "15/01/2025",
         duration: "4",
-        icon: <img src={dockerImage.src} alt="Docker Icon" />,
+        iconUrl: "/icons/docker.svg",
         category: "cloud-devops",
     },
     {
@@ -37,7 +32,7 @@ const courses: Course[] = [
         },
         date: "22/01/2025",
         duration: "6",
-        icon: <img src={kubernetesImage.src} alt="Kubernetes Icon" />,
+        iconUrl: "/icons/kubernetes.svg",
         category: "cloud-devops",
     },
     {
@@ -54,7 +49,7 @@ const courses: Course[] = [
         },
         date: "05/02/2025",
         duration: "3",
-        icon: <img src={awsImage.src} alt="AWS Icon" />,
+        iconUrl: "/icons/aws.svg",
         category: "cloud-devops",
     },
     {
@@ -71,7 +66,7 @@ const courses: Course[] = [
         },
         date: "12/02/2025",
         duration: "5",
-        icon: <img src={terraformImage.src} alt="Terraform Icon" />,
+        iconUrl: "/icons/terraform.svg",
         category: "cloud-devops",
     },
     {
@@ -88,7 +83,7 @@ const courses: Course[] = [
         },
         date: "19/02/2025",
         duration: "4",
-        icon: <img src={jenkinsImage.src} alt="Jenkins Icon" />,
+        iconUrl: "/icons/jenkins.svg",
         category: "cloud-devops",
     },
 ];

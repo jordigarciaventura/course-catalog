@@ -38,15 +38,13 @@ export type CategoryColor =
     | "yellow"
     | "slate";
 
-type Icon = React.ReactElement | string | JSX.Element;
-
 /**
  * Category definition
  */
 export interface Category {
     id: CourseCategory;
     label: MultilingualText;
-    icon: Icon;
+    icon: JSX.Element; // React component for the icon
     color: CategoryColor; // Color name (shade will be applied by theme)
 }
 
@@ -59,6 +57,6 @@ export interface Course {
     description: MultilingualText;
     date: string;
     duration: string;
-    icon: Icon;
+    iconUrl: string;
     category: CourseCategory;
 }

@@ -15,7 +15,7 @@ const courses: Course[] = [
         },
         date: "22/01/2025",
         duration: "8",
-        icon: "🥷",
+        iconUrl: "/icons/target.svg",
         category: "cybersecurity",
     },
     {
@@ -32,7 +32,7 @@ const courses: Course[] = [
         },
         date: "29/01/2025",
         duration: "6",
-        icon: "🌐",
+        iconUrl: "/icons/shield-globe.svg",
         category: "cybersecurity",
     },
     {
@@ -49,7 +49,7 @@ const courses: Course[] = [
         },
         date: "05/02/2025",
         duration: "7",
-        icon: "🔍",
+        iconUrl: "/icons/shield-monitor.svg",
         category: "cybersecurity",
     },
     {
@@ -66,7 +66,7 @@ const courses: Course[] = [
         },
         date: "12/02/2025",
         duration: "5",
-        icon: "🔒",
+        iconUrl: "/icons/lock-and-key.svg",
         category: "cybersecurity",
     },
     {
@@ -83,7 +83,7 @@ const courses: Course[] = [
         },
         date: "19/02/2025",
         duration: "6",
-        icon: "🕵️‍♂️",
+        iconUrl: "/icons/detective.svg",
         category: "cybersecurity",
     },
 ];

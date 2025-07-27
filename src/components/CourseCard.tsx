@@ -46,7 +46,10 @@ export const CourseCard: React.FC<Props> = ({
                             className="flex size-12 [&>svg]:w-full [&>svg]:h-full text-2xl items-center justify-center"
                             aria-hidden="true"
                         >
-                            {course.icon}
+                            <img
+                                src={course.iconUrl}
+                                className="w-full h-full"
+                            />
                         </span>
                     </div>
                     <CardTitle className="text-lg font-semibold leading-tight">

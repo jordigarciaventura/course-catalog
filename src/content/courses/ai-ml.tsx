@@ -1,12 +1,4 @@
 import type { Course } from "@/types";
-import {
-    ChatsTeardropIcon,
-    CrownSimpleIcon,
-    DotsNineIcon,
-    JoystickIcon,
-    RobotIcon,
-    VisorIcon,
-} from "@phosphor-icons/react";
 
 const courses: Course[] = [
     {
@@ -23,7 +15,7 @@ const courses: Course[] = [
         },
         date: "14/01/2025",
         duration: "6",
-        icon: <RobotIcon weight="duotone" />,
+        iconUrl: "/icons/robot.svg",
         category: "ai-ml",
     },
     {
@@ -40,7 +32,7 @@ const courses: Course[] = [
         },
         date: "21/01/2025",
         duration: "10",
-        icon: <DotsNineIcon weight="duotone" />,
+        iconUrl: "/icons/net.svg",
         category: "ai-ml",
     },
     {
@@ -57,7 +49,7 @@ const courses: Course[] = [
         },
         date: "28/01/2025",
         duration: "8",
-        icon: <ChatsTeardropIcon weight="duotone" />,
+        iconUrl: "/icons/chats.svg",
         category: "ai-ml",
     },
     {
@@ -74,7 +66,7 @@ const courses: Course[] = [
         },
         date: "04/02/2025",
         duration: "7",
-        icon: <VisorIcon weight="duotone" />,
+        iconUrl: "/icons/glasses.svg",
         category: "ai-ml",
     },
     {
@@ -91,7 +83,7 @@ const courses: Course[] = [
         },
         date: "11/02/2025",
         duration: "9",
-        icon: <JoystickIcon weight="duotone" />,
+        iconUrl: "/icons/reinforcement.svg",
         category: "ai-ml",
     },
     {
@@ -108,7 +100,7 @@ const courses: Course[] = [
         },
         date: "18/02/2025",
         duration: "15",
-        icon: <CrownSimpleIcon weight="duotone" />,
+        iconUrl: "/icons/architecture.svg",
         category: "ai-ml",
     },
 ];

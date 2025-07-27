@@ -1,6 +1,8 @@
 ---
 import { CourseCard } from "@/components/CourseCard";
 import { LanguageSelect } from "@/components/LanguageSelect";
+import { CategorySelect } from "@/components/CategorySelect";
+import { CourseGrid } from "@/components/CourseGrid";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslation } from "@/i18n/useTranslation";
 import type { Language } from "@/types";
@@ -53,40 +55,11 @@ export async function getStaticPaths() {
                 <Toggle style="width: 32px; height: 32px;" />
                 <LanguageSelect className="w-48" client:load />
             </div>
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-max"
-            >
-                {
-                    courses.map((course) => {
-                        const title = course.title[currentLanguage];
-                        const description = course.description[currentLanguage];
-
-                        // Determine if title is long (more than 50 characters)
-                        const hasLongTitle = title.length > 50;
-
-                        // Determine if description is long (more than 150 characters)
-                        const hasLongDescription = description.length > 150;
-
-                        // Build dynamic classes for grid spanning
-                        const gridClasses = [
-                            hasLongTitle ? "sm:col-span-2 md:col-span-2" : "",
-                            hasLongDescription ? "row-span-2" : "",
-                        ]
-                            .filter(Boolean)
-                            .join(" ");
-
-                        return (
-                            <div class={gridClasses}>
-                                <CourseCard
-                                    course={course}
-                                    currentLanguage={currentLanguage}
-                                    className="h-full"
-                                />
-                            </div>
-                        );
-                    })
-                }
-            </div>
+            <CourseGrid
+                courses={courses}
+                currentLanguage={currentLanguage}
+                client:load
+            />
         </div>
     </div>
 </BaseLayout>

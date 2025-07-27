@@ -12,6 +12,11 @@ export const ui = {
             es: "Explora nuestro catálogo de cursos",
             ca: "Explora el nostre catàleg de cursos",
         } as MultilingualText,
+        allCategories: {
+            en: "All categories",
+            es: "Todas las categorías",
+            ca: "Totes les categories",
+        } as MultilingualText,
     },
     common: {
         loading: {
