@@ -1,5 +1,4 @@
 import type { Course } from "@/types";
-import { LibraryBig } from "lucide-react";
 
 const courses: Course[] = [
     {
@@ -16,7 +15,7 @@ const courses: Course[] = [
         },
         date: "22/01/2025",
         duration: "8",
-        icon: <LibraryBig />,
+        icon: "🥷",
         category: "cybersecurity",
     },
     {
@@ -33,7 +32,7 @@ const courses: Course[] = [
         },
         date: "29/01/2025",
         duration: "6",
-        icon: <LibraryBig />,
+        icon: "🌐",
         category: "cybersecurity",
     },
     {
@@ -50,7 +49,7 @@ const courses: Course[] = [
         },
         date: "05/02/2025",
         duration: "7",
-        icon: <LibraryBig />,
+        icon: "🔍",
         category: "cybersecurity",
     },
     {
@@ -67,7 +66,7 @@ const courses: Course[] = [
         },
         date: "12/02/2025",
         duration: "5",
-        icon: <LibraryBig />,
+        icon: "🔒",
         category: "cybersecurity",
     },
     {
@@ -84,7 +83,7 @@ const courses: Course[] = [
         },
         date: "19/02/2025",
         duration: "6",
-        icon: <LibraryBig />,
+        icon: "🕵️‍♂️",
         category: "cybersecurity",
     },
 ];

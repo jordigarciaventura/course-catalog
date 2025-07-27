@@ -1,8 +1,5 @@
-/**
- * Global type definitions for the course catalog application
- */
-
 import { courseCategories, languages, languageLabels } from "@/config";
+import type { JSX } from "react";
 
 /**
  * Available course categories - extracted from config
@@ -41,13 +38,15 @@ export type CategoryColor =
     | "yellow"
     | "slate";
 
+type Icon = React.ReactElement | string | JSX.Element;
+
 /**
  * Category definition
  */
 export interface Category {
     id: CourseCategory;
     label: MultilingualText;
-    icon: React.ReactElement;
+    icon: Icon;
     color: CategoryColor; // Color name (shade will be applied by theme)
 }
 
@@ -60,6 +59,6 @@ export interface Course {
     description: MultilingualText;
     date: string;
     duration: string;
-    icon: React.ReactElement;
+    icon: Icon;
     category: CourseCategory;
 }

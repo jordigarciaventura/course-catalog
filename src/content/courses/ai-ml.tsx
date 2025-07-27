@@ -1,5 +1,12 @@
 import type { Course } from "@/types";
-import { LibraryBig } from "lucide-react";
+import {
+    ChatsTeardropIcon,
+    CrownSimpleIcon,
+    DotsNineIcon,
+    JoystickIcon,
+    RobotIcon,
+    VisorIcon,
+} from "@phosphor-icons/react";
 
 const courses: Course[] = [
     {
@@ -16,7 +23,7 @@ const courses: Course[] = [
         },
         date: "14/01/2025",
         duration: "6",
-        icon: <LibraryBig />,
+        icon: <RobotIcon weight="duotone" />,
         category: "ai-ml",
     },
     {
@@ -33,7 +40,7 @@ const courses: Course[] = [
         },
         date: "21/01/2025",
         duration: "10",
-        icon: <LibraryBig />,
+        icon: <DotsNineIcon weight="duotone" />,
         category: "ai-ml",
     },
     {
@@ -50,7 +57,7 @@ const courses: Course[] = [
         },
         date: "28/01/2025",
         duration: "8",
-        icon: <LibraryBig />,
+        icon: <ChatsTeardropIcon weight="duotone" />,
         category: "ai-ml",
     },
     {
@@ -67,7 +74,7 @@ const courses: Course[] = [
         },
         date: "04/02/2025",
         duration: "7",
-        icon: <LibraryBig />,
+        icon: <VisorIcon weight="duotone" />,
         category: "ai-ml",
     },
     {
@@ -84,7 +91,7 @@ const courses: Course[] = [
         },
         date: "11/02/2025",
         duration: "9",
-        icon: <LibraryBig />,
+        icon: <JoystickIcon weight="duotone" />,
         category: "ai-ml",
     },
     {
@@ -101,7 +108,7 @@ const courses: Course[] = [
         },
         date: "18/02/2025",
         duration: "15",
-        icon: <LibraryBig />,
+        icon: <CrownSimpleIcon weight="duotone" />,
         category: "ai-ml",
     },
 ];

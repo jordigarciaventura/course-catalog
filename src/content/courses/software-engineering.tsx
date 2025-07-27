@@ -1,5 +1,9 @@
 import type { Course } from "@/types";
-import { LibraryBig } from "lucide-react";
+import DatabaseConnect from "@/icons/database-connect.svg?react";
+import Loop from "@/icons/loop.svg?react";
+import LabTube from "@/icons/lab-tube.svg?react";
+import Shapes from "@/icons/shapes.svg?react";
+import CodeReview from "@/icons/code-review.svg?react";
 
 const courses: Course[] = [
     {
@@ -16,7 +20,7 @@ const courses: Course[] = [
         },
         date: "24/01/2025",
         duration: "8",
-        icon: <LibraryBig />,
+        icon: <DatabaseConnect />,
         category: "software-engineering",
     },
     {
@@ -33,7 +37,7 @@ const courses: Course[] = [
         },
         date: "31/01/2025",
         duration: "4",
-        icon: <LibraryBig />,
+        icon: <Loop />,
         category: "software-engineering",
     },
     {
@@ -50,7 +54,7 @@ const courses: Course[] = [
         },
         date: "07/02/2025",
         duration: "6",
-        icon: <LibraryBig />,
+        icon: <LabTube />,
         category: "software-engineering",
     },
     {
@@ -67,7 +71,7 @@ const courses: Course[] = [
         },
         date: "14/02/2025",
         duration: "7",
-        icon: <LibraryBig />,
+        icon: <Shapes />,
         category: "software-engineering",
     },
     {
@@ -84,7 +88,7 @@ const courses: Course[] = [
         },
         date: "21/02/2025",
         duration: "5",
-        icon: <LibraryBig />,
+        icon: <CodeReview />,
         category: "software-engineering",
     },
 ];

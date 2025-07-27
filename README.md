@@ -28,3 +28,22 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Icons
+
+- [Emojipedia](https://emojipedia.org/)
+
+- [icons8](https://icons8.com/icons/set/)
+- [Iconfinder](https://www.iconfinder.com/)
+- **[Streamline Icons](https://www.streamlinehq.com/free) _(Top choice)_**
+- **[iconify](https://icon-sets.iconify.design/) _(Top choice)_**
+
+- [Simple Icons](https://simpleicons.org/)
+- [Devicon](https://devicon.dev/)
+
+- [Phosphor Icons](https://phosphoricons.com/)
+- [Icofont](https://icofont.com/)
+- [Lucide Icons](https://lucide.dev/)
+- [Remix Icon](https://remixicon.com/)
+- [Google Material Icons](https://fonts.google.com/icons)
+- [Bootstrap Icons](https://icons.getbootstrap.com/)
