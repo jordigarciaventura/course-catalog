@@ -87,6 +87,36 @@ export const ui = {
             ca: (count: number) =>
                 count === 1 ? "1 curs trobat" : `${count} cursos trobats`,
         },
+        filterByCategory: {
+            en: "Filter by category",
+            es: "Filtrar por categoría",
+            ca: "Filtrar per categoria",
+        } as MultilingualText,
+        sortBy: {
+            en: "Sort by date",
+            es: "Ordenar por fecha",
+            ca: "Ordenar per data",
+        } as MultilingualText,
+        toggleYearFilter: {
+            en: "Toggle year filter",
+            es: "Alternar filtro de año",
+            ca: "Alternar filtre d'any",
+        } as MultilingualText,
+        showYearFilter: {
+            en: "Show year filter",
+            es: "Mostrar filtro de año",
+            ca: "Mostrar filtre d'any",
+        } as MultilingualText,
+        hideYearFilter: {
+            en: "Hide year filter",
+            es: "Ocultar filtro de año",
+            ca: "Ocultar filtre d'any",
+        } as MultilingualText,
+        filterByYear: {
+            en: "Filter by year",
+            es: "Filtrar por año",
+            ca: "Filtrar per any",
+        } as MultilingualText,
     },
     common: {
         loading: {

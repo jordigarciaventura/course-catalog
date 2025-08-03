@@ -1,4 +1,3 @@
-import * as React from "react";
 import { CalendarIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -82,65 +81,72 @@ export function YearRangePicker({
         : years;
 
     return (
-        <div className={cn("flex flex-col sm:flex-row gap-2", className)}>
-            <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
-                {/* From Year Picker */}
-                <Select
-                    value={yearRange.from?.toString() || ""}
-                    onValueChange={handleFromYearChange}
-                >
-                    <SelectTrigger className="w-full sm:w-auto sm:min-w-[120px]">
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        <SelectValue placeholder={t("index.selectStartDate")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {availableFromYears.map((year) => (
-                            <SelectItem key={year} value={year.toString()}>
-                                {year}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+        <fieldset className={cn("space-y-2", className)}>
+            <div className="flex gap-2 items-end">
+                <div className="flex gap-2 items-start flex-1">
+                    {/* From Year Picker */}
+                    <div className="flex flex-col gap-1 w-full">
+                        <label
+                            htmlFor="year-from"
+                            className="text-xs font-medium text-muted-foreground"
+                        >
+                            {t("index.startDate")}
+                        </label>
+                        <Select
+                            value={yearRange.from?.toString() || ""}
+                            onValueChange={handleFromYearChange}
+                        >
+                            <SelectTrigger id="year-from" className="w-full">
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <SelectValue
+                                    placeholder={t("index.selectStartDate")}
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {availableFromYears.map((year) => (
+                                    <SelectItem
+                                        key={year}
+                                        value={year.toString()}
+                                    >
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-                {/* Visual separator */}
-                <div className="hidden sm:flex items-center px-2 text-muted-foreground">
-                    <span>—</span>
+                    {/* To Year Picker */}
+                    <div className="flex flex-col gap-1 w-full">
+                        <label
+                            htmlFor="year-to"
+                            className="text-xs font-medium text-muted-foreground"
+                        >
+                            {t("index.endDate")}
+                        </label>
+                        <Select
+                            value={yearRange.to?.toString() || ""}
+                            onValueChange={handleToYearChange}
+                        >
+                            <SelectTrigger id="year-to" className="w-full">
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <SelectValue
+                                    placeholder={t("index.selectEndDate")}
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {availableToYears.map((year) => (
+                                    <SelectItem
+                                        key={year}
+                                        value={year.toString()}
+                                    >
+                                        {year}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
-
-                {/* To Year Picker */}
-                <Select
-                    value={yearRange.to?.toString() || ""}
-                    onValueChange={handleToYearChange}
-                >
-                    <SelectTrigger className="w-full sm:w-auto sm:min-w-[120px]">
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        <SelectValue placeholder={t("index.selectEndDate")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {availableToYears.map((year) => (
-                            <SelectItem key={year} value={year.toString()}>
-                                {year}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
             </div>
-
-            {/* Clear Button */}
-            {hasAnyYear && (
-                <Button
-                    variant="outline"
-                    size="default"
-                    onClick={clearYears}
-                    className="w-full sm:w-auto"
-                    title={t("index.clearDates")}
-                >
-                    <X className="h-4 w-4" />
-                    <span className="hidden md:inline ml-2">
-                        {t("index.clearDates")}
-                    </span>
-                </Button>
-            )}
-        </div>
+        </fieldset>
     );
 }

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n/useTranslation";
 import type { Language } from "@/types";
@@ -41,7 +40,7 @@ export function SortToggle({
             }
         >
             {isAscending ? <ArrowDown01 size={16} /> : <ArrowUp01 size={16} />}
-            <span className="hidden sm:inline">
+            <span>
                 {isAscending
                     ? t("index.sortAscending")
                     : t("index.sortDescending")}

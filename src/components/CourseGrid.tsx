@@ -1,9 +1,8 @@
 import * as React from "react";
 import { CourseCard } from "./CourseCard";
-import { CategorySelect } from "./CategorySelect";
-import { SortToggle, type SortOrder } from "./SortToggle";
-import { YearRangePicker, type YearRange } from "./YearRangePicker";
-import { PagefindSearch } from "./PagefindSearch";
+import { CourseFilterPanel } from "./CourseFilterPanel";
+import { type SortOrder } from "./SortToggle";
+import { type YearRange } from "./YearRangePicker";
 import type { Course, Language } from "@/types";
 import { ui } from "@/i18n/translations";
 
@@ -118,32 +117,17 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4">
-                <PagefindSearch
-                    currentLanguage={currentLanguage}
-                    courses={courses}
-                    onSearchResults={setSearchResults}
-                    className="w-full"
-                />
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                    <CategorySelect
-                        currentLanguage={currentLanguage}
-                        selectedCategory={selectedCategory}
-                        onCategoryChange={setSelectedCategory}
-                        className="w-full sm:w-[220px]"
-                    />
-                    <SortToggle
-                        currentLanguage={currentLanguage}
-                        sortOrder={sortOrder}
-                        onSortChange={setSortOrder}
-                    />
-                </div>
-                <YearRangePicker
-                    currentLanguage={currentLanguage}
-                    yearRange={yearRange}
-                    onYearRangeChange={setYearRange}
-                />
-            </div>
+            <CourseFilterPanel
+                courses={courses}
+                currentLanguage={currentLanguage}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+                sortOrder={sortOrder}
+                onSortChange={setSortOrder}
+                yearRange={yearRange}
+                onYearRangeChange={setYearRange}
+                onSearchResults={setSearchResults}
+            />
             {filteredAndSortedCourses.length > 0 && (
                 <div className="text-sm text-muted-foreground">
                     {ui.index.searchResults[currentLanguage](
