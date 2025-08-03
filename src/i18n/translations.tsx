@@ -17,6 +17,26 @@ export const ui = {
             es: "Todas las categorías",
             ca: "Totes les categories",
         } as MultilingualText,
+        sortAscending: {
+            en: "Older first",
+            es: "Más antiguos primero",
+            ca: "Més antics primer",
+        } as MultilingualText,
+        sortDescending: {
+            en: "Newer first",
+            es: "Más recientes primero",
+            ca: "Més recents primer",
+        } as MultilingualText,
+        sortTooltipAsc: {
+            en: "Sort courses from oldest to newest",
+            es: "Ordenar cursos de más antiguos a más recientes",
+            ca: "Ordenar cursos de més antics a més recents",
+        } as MultilingualText,
+        sortTooltipDesc: {
+            en: "Sort courses from newest to oldest",
+            es: "Ordenar cursos de más recientes a más antiguos",
+            ca: "Ordenar cursos de més recents a més antics",
+        } as MultilingualText,
     },
     common: {
         loading: {
