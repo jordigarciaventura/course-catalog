@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import svgr from "vite-plugin-svgr";
+import pagefind from "astro-pagefind";
 
 import react from "@astrojs/react";
 
@@ -23,5 +24,5 @@ export default defineConfig({
     ],
   },
 
-  integrations: [react(), icon()],
+  integrations: [react(), icon(), pagefind()],
 });

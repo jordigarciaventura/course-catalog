@@ -60,6 +60,29 @@ export async function getStaticPaths() {
                 currentLanguage={currentLanguage}
                 client:load
             />
+
+            <!-- Invisible content for Pagefind indexing -->
+            <div class="hidden" data-pagefind-body>
+                {
+                    courses.map((course) => (
+                        <div
+                            data-pagefind-meta={`course_id:${course.id}`}
+                            data-pagefind-meta={`category:${course.category}`}
+                        >
+                            <h2>{course.title[currentLanguage]}</h2>
+                            <p>{course.description[currentLanguage]}</p>
+                            <span data-pagefind-meta={`date:${course.date}`}>
+                                {course.date}
+                            </span>
+                            <span
+                                data-pagefind-meta={`duration:${course.duration}`}
+                            >
+                                {course.duration}
+                            </span>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     </div>
 </BaseLayout>

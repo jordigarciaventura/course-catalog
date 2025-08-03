@@ -62,6 +62,31 @@ export const ui = {
             es: "Limpiar",
             ca: "Netejar",
         } as MultilingualText,
+        searchPlaceholder: {
+            en: "Search courses...",
+            es: "Buscar cursos...",
+            ca: "Cercar cursos...",
+        } as MultilingualText,
+        searchLabel: {
+            en: "Search",
+            es: "Buscar",
+            ca: "Cercar",
+        } as MultilingualText,
+        noResults: {
+            en: "No courses found",
+            es: "No se encontraron cursos",
+            ca: "No s'han trobat cursos",
+        } as MultilingualText,
+        searchResults: {
+            en: (count: number) =>
+                count === 1 ? "1 course found" : `${count} courses found`,
+            es: (count: number) =>
+                count === 1
+                    ? "1 curso encontrado"
+                    : `${count} cursos encontrados`,
+            ca: (count: number) =>
+                count === 1 ? "1 curs trobat" : `${count} cursos trobats`,
+        },
     },
     common: {
         loading: {

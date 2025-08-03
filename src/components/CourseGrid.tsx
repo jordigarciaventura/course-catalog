@@ -3,7 +3,9 @@ import { CourseCard } from "./CourseCard";
 import { CategorySelect } from "./CategorySelect";
 import { SortToggle, type SortOrder } from "./SortToggle";
 import { YearRangePicker, type YearRange } from "./YearRangePicker";
+import { PagefindSearch } from "./PagefindSearch";
 import type { Course, Language } from "@/types";
+import { ui } from "@/i18n/translations";
 
 interface CourseGridProps {
     courses: Course[];
@@ -18,6 +20,7 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         from: undefined,
         to: undefined,
     });
+    const [searchResults, setSearchResults] = React.useState<Course[]>(courses);
 
     // Utility function to extract year from DD/MM/YYYY format
     const getCourseYear = (dateString: string): number => {
@@ -42,13 +45,18 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         return yearNum;
     };
 
+    // Update search results when courses change
+    React.useEffect(() => {
+        setSearchResults(courses);
+    }, [courses]);
+
     // Filter and sort courses based on selected category, year range, and sort order
     const filteredAndSortedCourses = React.useMemo(() => {
-        let filtered = courses;
+        let filtered = searchResults;
 
         // Filter by category
         if (selectedCategory !== "all") {
-            filtered = courses.filter(
+            filtered = filtered.filter(
                 (course) => course.category === selectedCategory
             );
         }
@@ -100,11 +108,23 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         });
 
         return sorted;
-    }, [courses, selectedCategory, sortOrder, yearRange, currentLanguage]);
+    }, [
+        searchResults,
+        selectedCategory,
+        sortOrder,
+        yearRange,
+        currentLanguage,
+    ]);
 
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
+                <PagefindSearch
+                    currentLanguage={currentLanguage}
+                    courses={courses}
+                    onSearchResults={setSearchResults}
+                    className="w-full"
+                />
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                     <CategorySelect
                         currentLanguage={currentLanguage}
@@ -124,36 +144,51 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
                     onYearRangeChange={setYearRange}
                 />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-max">
-                {filteredAndSortedCourses.map((course) => {
-                    const title = course.title[currentLanguage];
-                    const description = course.description[currentLanguage];
+            {filteredAndSortedCourses.length > 0 && (
+                <div className="text-sm text-muted-foreground">
+                    {ui.index.searchResults[currentLanguage](
+                        filteredAndSortedCourses.length
+                    )}
+                </div>
+            )}
+            {filteredAndSortedCourses.length === 0 ? (
+                <div className="text-center py-12">
+                    <p className="text-muted-foreground text-lg">
+                        {ui.index.noResults[currentLanguage]}
+                    </p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-max">
+                    {filteredAndSortedCourses.map((course) => {
+                        const title = course.title[currentLanguage];
+                        const description = course.description[currentLanguage];
 
-                    // Determine if title is long (more than 50 characters)
-                    const hasLongTitle = title.length > 50;
+                        // Determine if title is long (more than 50 characters)
+                        const hasLongTitle = title.length > 50;
 
-                    // Determine if description is long (more than 150 characters)
-                    const hasLongDescription = description.length > 150;
+                        // Determine if description is long (more than 150 characters)
+                        const hasLongDescription = description.length > 150;
 
-                    // Build dynamic classes for grid spanning
-                    const gridClasses = [
-                        hasLongTitle ? "sm:col-span-2 md:col-span-2" : "",
-                        hasLongDescription ? "row-span-2" : "",
-                    ]
-                        .filter(Boolean)
-                        .join(" ");
+                        // Build dynamic classes for grid spanning
+                        const gridClasses = [
+                            hasLongTitle ? "sm:col-span-2 md:col-span-2" : "",
+                            hasLongDescription ? "row-span-2" : "",
+                        ]
+                            .filter(Boolean)
+                            .join(" ");
 
-                    return (
-                        <div key={course.id} className={gridClasses}>
-                            <CourseCard
-                                course={course}
-                                currentLanguage={currentLanguage}
-                                className="h-full"
-                            />
-                        </div>
-                    );
-                })}
-            </div>
+                        return (
+                            <div key={course.id} className={gridClasses}>
+                                <CourseCard
+                                    course={course}
+                                    currentLanguage={currentLanguage}
+                                    className="h-full"
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
