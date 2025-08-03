@@ -2,6 +2,7 @@ import * as React from "react";
 import { CourseCard } from "./CourseCard";
 import { CategorySelect } from "./CategorySelect";
 import { SortToggle, type SortOrder } from "./SortToggle";
+import { YearRangePicker, type YearRange } from "./YearRangePicker";
 import type { Course, Language } from "@/types";
 
 interface CourseGridProps {
@@ -13,8 +14,35 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
     const [selectedCategory, setSelectedCategory] =
         React.useState<string>("all");
     const [sortOrder, setSortOrder] = React.useState<SortOrder>("desc");
+    const [yearRange, setYearRange] = React.useState<YearRange>({
+        from: undefined,
+        to: undefined,
+    });
 
-    // Filter and sort courses based on selected category and sort order
+    // Utility function to extract year from DD/MM/YYYY format
+    const getCourseYear = (dateString: string): number => {
+        const [day, month, year] = dateString.split("/");
+
+        // Validate the date parts
+        if (!day || !month || !year) {
+            console.warn(
+                `Invalid date format: ${dateString}. Expected DD/MM/YYYY.`
+            );
+            return 0; // Return 0 as fallback
+        }
+
+        const yearNum = parseInt(year, 10);
+
+        // Validate that the year is valid
+        if (isNaN(yearNum)) {
+            console.warn(`Invalid year in date: ${dateString}`);
+            return 0; // Return 0 as fallback
+        }
+
+        return yearNum;
+    };
+
+    // Filter and sort courses based on selected category, year range, and sort order
     const filteredAndSortedCourses = React.useMemo(() => {
         let filtered = courses;
 
@@ -25,11 +53,44 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
             );
         }
 
-        // Sort by date (assuming DD/MM/YYYY format)
+        // Filter by year range
+        if (yearRange.from || yearRange.to) {
+            filtered = filtered.filter((course) => {
+                // Extract year from course date (DD/MM/YYYY format) using utility function
+                const courseYear = getCourseYear(course.date);
+
+                // Check if course year is within the selected range
+                if (yearRange.from && yearRange.to) {
+                    return (
+                        courseYear >= yearRange.from &&
+                        courseYear <= yearRange.to
+                    );
+                } else if (yearRange.from) {
+                    return courseYear >= yearRange.from;
+                } else if (yearRange.to) {
+                    return courseYear <= yearRange.to;
+                }
+
+                return true;
+            });
+        }
+
+        // Sort by date (DD/MM/YYYY format) - still using full date for precision
         const sorted = [...filtered].sort((a, b) => {
-            // Parse dates - convert DD/MM/YYYY to YYYY-MM-DD for proper Date parsing
-            const dateA = new Date(a.date.split("/").reverse().join("-"));
-            const dateB = new Date(b.date.split("/").reverse().join("-"));
+            // Parse dates for precise sorting
+            const [dayA, monthA, yearA] = a.date.split("/");
+            const [dayB, monthB, yearB] = b.date.split("/");
+
+            const dateA = new Date(
+                parseInt(yearA),
+                parseInt(monthA) - 1,
+                parseInt(dayA)
+            );
+            const dateB = new Date(
+                parseInt(yearB),
+                parseInt(monthB) - 1,
+                parseInt(dayB)
+            );
 
             if (sortOrder === "asc") {
                 return dateA.getTime() - dateB.getTime(); // Older first
@@ -39,21 +100,28 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         });
 
         return sorted;
-    }, [courses, selectedCategory, sortOrder, currentLanguage]);
+    }, [courses, selectedCategory, sortOrder, yearRange, currentLanguage]);
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                <CategorySelect
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                    <CategorySelect
+                        currentLanguage={currentLanguage}
+                        selectedCategory={selectedCategory}
+                        onCategoryChange={setSelectedCategory}
+                        className="w-full sm:w-[220px]"
+                    />
+                    <SortToggle
+                        currentLanguage={currentLanguage}
+                        sortOrder={sortOrder}
+                        onSortChange={setSortOrder}
+                    />
+                </div>
+                <YearRangePicker
                     currentLanguage={currentLanguage}
-                    selectedCategory={selectedCategory}
-                    onCategoryChange={setSelectedCategory}
-                    className="w-full sm:w-[220px]"
-                />
-                <SortToggle
-                    currentLanguage={currentLanguage}
-                    sortOrder={sortOrder}
-                    onSortChange={setSortOrder}
+                    yearRange={yearRange}
+                    onYearRangeChange={setYearRange}
                 />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-max">

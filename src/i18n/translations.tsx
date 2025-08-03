@@ -37,6 +37,31 @@ export const ui = {
             es: "Ordenar cursos de más recientes a más antiguos",
             ca: "Ordenar cursos de més recents a més antics",
         } as MultilingualText,
+        startDate: {
+            en: "From",
+            es: "Desde",
+            ca: "Des de",
+        } as MultilingualText,
+        endDate: {
+            en: "To",
+            es: "Hasta",
+            ca: "Fins a",
+        } as MultilingualText,
+        selectStartDate: {
+            en: "Select year",
+            es: "Seleccionar año",
+            ca: "Seleccionar any",
+        } as MultilingualText,
+        selectEndDate: {
+            en: "Select year",
+            es: "Seleccionar año",
+            ca: "Seleccionar any",
+        } as MultilingualText,
+        clearDates: {
+            en: "Clear",
+            es: "Limpiar",
+            ca: "Netejar",
+        } as MultilingualText,
     },
     common: {
         loading: {
