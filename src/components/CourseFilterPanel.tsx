@@ -2,11 +2,10 @@ import { PagefindSearch } from "./PagefindSearch";
 import { CategorySelect } from "./CategorySelect";
 import { SortToggle, type SortOrder } from "./SortToggle";
 import { YearRangePicker, type YearRange } from "./YearRangePicker";
-import { Button } from "./ui/button";
+import { YearFilterToggle } from "./YearFilterToggle";
 import { useTranslation } from "@/i18n/useTranslation";
 import type { Course, Language } from "@/types";
 import { cn } from "@/lib/utils";
-import { Calendar } from "lucide-react";
 import { useState } from "react";
 
 interface CourseFilterPanelProps {
@@ -35,70 +34,60 @@ export function CourseFilterPanel({
     className,
 }: CourseFilterPanelProps) {
     const t = useTranslation(currentLanguage);
-    const [showYearFilter, setShowYearFilter] = useState(true);
+    const [showYearFilter, setShowYearFilter] = useState(false);
 
     return (
         <div className={cn("flex flex-col gap-4", className)}>
-            <PagefindSearch
-                currentLanguage={currentLanguage}
-                courses={courses}
-                onSearchResults={onSearchResults}
-                className="w-full"
-            />
+            {/* Top row: Category Select + Search (large screens) or stacked (small screens) */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-2">
+                <CategorySelect
+                    currentLanguage={currentLanguage}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={onCategoryChange}
+                    className="w-full sm:w-60 sm:flex-shrink-0"
+                />
+                <PagefindSearch
+                    currentLanguage={currentLanguage}
+                    courses={courses}
+                    onSearchResults={onSearchResults}
+                    className="w-full sm:flex-1"
+                />
+            </div>
 
-            <CategorySelect
-                currentLanguage={currentLanguage}
-                selectedCategory={selectedCategory}
-                onCategoryChange={onCategoryChange}
-                className="w-full"
-            />
-
-            <div className="flex gap-2 w-full">
+            {/* Bottom row: Sort + Year Range (large screens) or stacked with toggle (small screens) */}
+            <div className="flex gap-4 sm:items-end">
                 <SortToggle
                     currentLanguage={currentLanguage}
                     sortOrder={sortOrder}
                     onSortChange={onSortChange}
-                    className="flex-1"
+                    className="flex flex-1 sm:flex-1 sm:mr-4"
                 />
 
-                {/* Button to toggle year filter visibility */}
-                <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                        const newShowState = !showYearFilter;
-                        setShowYearFilter(newShowState);
-                        // Clear year range when hiding the filter
-                        if (!newShowState) {
-                            onYearRangeChange({
-                                from: undefined,
-                                to: undefined,
-                            });
-                        }
-                    }}
-                    title={
-                        showYearFilter
-                            ? t("index.hideYearFilter")
-                            : t("index.showYearFilter")
-                    }
-                    className={cn(
-                        "transition-colors flex-1",
-                        showYearFilter && "bg-accent text-accent-foreground"
-                    )}
-                >
-                    <Calendar className="h-4 w-4" />
-                    {t("index.filterByYear")}
-                </Button>
+                {/* Year filter toggle for small screens */}
+                <YearFilterToggle
+                    currentLanguage={currentLanguage}
+                    showYearFilter={showYearFilter}
+                    onToggle={setShowYearFilter}
+                    className="sm:hidden flex flex-1"
+                />
+
+                {/* Year filter for large screens - always visible */}
+                <YearRangePicker
+                    currentLanguage={currentLanguage}
+                    yearRange={yearRange}
+                    onYearRangeChange={onYearRangeChange}
+                    className="hidden sm:flex sm:flex-2"
+                />
             </div>
+
+            {/* Year filter for small screens - toggleable */}
             {showYearFilter && (
-                <div className="flex gap-2">
-                    <YearRangePicker
-                        currentLanguage={currentLanguage}
-                        yearRange={yearRange}
-                        onYearRangeChange={onYearRangeChange}
-                        className="w-full"
-                    />
-                </div>
+                <YearRangePicker
+                    currentLanguage={currentLanguage}
+                    yearRange={yearRange}
+                    onYearRangeChange={onYearRangeChange}
+                    className="sm:hidden flex flex-col gap-2"
+                />
             )}
         </div>
     );
