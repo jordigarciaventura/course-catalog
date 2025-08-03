@@ -19,6 +19,7 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         from: undefined,
         to: undefined,
     });
+    const [filterByYear, setFilterByYear] = React.useState(false);
     const [searchResults, setSearchResults] = React.useState<Course[]>(courses);
 
     // Utility function to extract year from DD/MM/YYYY format
@@ -49,6 +50,10 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         setSearchResults(courses);
     }, [courses]);
 
+    const handleToggleYearFilter = (show: boolean) => {
+        setFilterByYear(show);
+    };
+
     // Filter and sort courses based on selected category, year range, and sort order
     const filteredAndSortedCourses = React.useMemo(() => {
         let filtered = searchResults;
@@ -61,7 +66,7 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         }
 
         // Filter by year range
-        if (yearRange.from || yearRange.to) {
+        if (filterByYear && (yearRange.from || yearRange.to)) {
             filtered = filtered.filter((course) => {
                 // Extract year from course date (DD/MM/YYYY format) using utility function
                 const courseYear = getCourseYear(course.date);
@@ -113,6 +118,7 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
         sortOrder,
         yearRange,
         currentLanguage,
+        filterByYear,
     ]);
 
     return (
@@ -125,6 +131,7 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
                 sortOrder={sortOrder}
                 onSortChange={setSortOrder}
                 yearRange={yearRange}
+                onToggleYearFilter={handleToggleYearFilter}
                 onYearRangeChange={setYearRange}
                 onSearchResults={setSearchResults}
             />

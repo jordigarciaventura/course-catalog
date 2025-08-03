@@ -6,9 +6,9 @@ import { YearFilterToggle } from "./YearFilterToggle";
 import { useTranslation } from "@/i18n/useTranslation";
 import type { Course, Language } from "@/types";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-interface CourseFilterPanelProps {
+interface Props {
     courses: Course[];
     currentLanguage: Language;
     selectedCategory: string;
@@ -18,6 +18,7 @@ interface CourseFilterPanelProps {
     yearRange: YearRange;
     onYearRangeChange: (range: YearRange) => void;
     onSearchResults: (results: Course[]) => void;
+    onToggleYearFilter: (show: boolean) => void;
     className?: string;
 }
 
@@ -31,10 +32,16 @@ export function CourseFilterPanel({
     yearRange,
     onYearRangeChange,
     onSearchResults,
+    onToggleYearFilter,
     className,
-}: CourseFilterPanelProps) {
+}: Props) {
     const t = useTranslation(currentLanguage);
     const [showYearFilter, setShowYearFilter] = useState(false);
+
+    const handleToggleYearFilter = () => {
+        setShowYearFilter((prev) => !prev);
+        onToggleYearFilter(!showYearFilter);
+    };
 
     return (
         <div className={cn("flex flex-col gap-4", className)}>
@@ -55,40 +62,44 @@ export function CourseFilterPanel({
             </div>
 
             {/* Bottom row: Sort + Year Range (large screens) or stacked with toggle (small screens) */}
-            <div className="flex gap-4 sm:items-end">
-                <SortToggle
-                    currentLanguage={currentLanguage}
-                    sortOrder={sortOrder}
-                    onSortChange={onSortChange}
-                    className="flex flex-1 sm:flex-1 sm:mr-4"
-                />
+            <div className="flex flex-col gap-4">
+                <div className="flex gap-4 items-end min-h-14">
+                    <SortToggle
+                        currentLanguage={currentLanguage}
+                        sortOrder={sortOrder}
+                        onSortChange={onSortChange}
+                        className="flex flex-1 px-4 sm:max-w-fit"
+                    />
 
-                {/* Year filter toggle for small screens */}
-                <YearFilterToggle
-                    currentLanguage={currentLanguage}
-                    showYearFilter={showYearFilter}
-                    onToggle={setShowYearFilter}
-                    className="sm:hidden flex flex-1"
-                />
+                    {/* Year filter toggle for small screens */}
+                    <YearFilterToggle
+                        currentLanguage={currentLanguage}
+                        showYearFilter={showYearFilter}
+                        onToggle={handleToggleYearFilter}
+                        className="flex flex-1 px-4 sm:max-w-fit"
+                    />
 
-                {/* Year filter for large screens - always visible */}
-                <YearRangePicker
-                    currentLanguage={currentLanguage}
-                    yearRange={yearRange}
-                    onYearRangeChange={onYearRangeChange}
-                    className="hidden sm:flex sm:flex-2"
-                />
+                    {/* Year filter for large screens - always visible */}
+                    {showYearFilter && (
+                        <YearRangePicker
+                            currentLanguage={currentLanguage}
+                            yearRange={yearRange}
+                            onYearRangeChange={onYearRangeChange}
+                            className="hidden sm:flex sm:flex-1"
+                        />
+                    )}
+                </div>
+
+                {/* Year filter for small screens - toggleable */}
+                {showYearFilter && (
+                    <YearRangePicker
+                        currentLanguage={currentLanguage}
+                        yearRange={yearRange}
+                        onYearRangeChange={onYearRangeChange}
+                        className="sm:hidden flex flex-col gap-2"
+                    />
+                )}
             </div>
-
-            {/* Year filter for small screens - toggleable */}
-            {showYearFilter && (
-                <YearRangePicker
-                    currentLanguage={currentLanguage}
-                    yearRange={yearRange}
-                    onYearRangeChange={onYearRangeChange}
-                    className="sm:hidden flex flex-col gap-2"
-                />
-            )}
         </div>
     );
 }
