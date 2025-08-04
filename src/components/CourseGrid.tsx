@@ -30,7 +30,7 @@ export function CourseGrid({ allCourses }: Props) {
     useEffect(() => setCourses(allCourses), []);
 
     return (
-        <div className="flex flex-col gap-6 max-w-4xl w-full p-4">
+        <div className="flex flex-col gap-6 max-w-4xl w-full p-4 min-h-screen">
             <CourseFilterPanel />
             {filteredAndSortedCourses.length > 0 && (
                 <div className="flex items-center justify-between">

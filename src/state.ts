@@ -16,25 +16,23 @@ const URL_STATE_DEFAULTS = {
     olderFirst: false,
 };
 
-const hashStorage: StateStorage = {
+const queryStorage: StateStorage = {
     getItem: (key): string => {
-        const hashQuery = location.hash.slice(1);
+        const searchParams = new URLSearchParams(location.search);
 
-        // If no hash, return empty state
-        if (!hashQuery) {
+        // If no query parameters, return empty state
+        if (searchParams.toString() === "") {
             return JSON.stringify({
                 state: {},
                 version: 0,
             });
         }
 
-        const parsed = qs.parse(hashQuery);
-
-        // Create a state object from the flat query parameters
+        // Create a state object from the query parameters
         const state: any = {};
 
         // Map URL parameters back to state structure with proper type conversion
-        for (const [paramKey, value] of Object.entries(parsed)) {
+        for (const [paramKey, value] of searchParams) {
             if (paramKey in URL_STATE_DEFAULTS) {
                 // Convert values back to their proper types
                 if (paramKey === "filterByYear" || paramKey === "olderFirst") {
@@ -83,19 +81,27 @@ const hashStorage: StateStorage = {
             }
         }
 
-        // Set the hash with clean query parameters
+        // Update URL with query parameters
+        const url = new URL(location.href);
+
         if (hasNonDefaultValues) {
-            const newHash = qs.stringify(filteredParams, {
+            // Set query parameters
+            url.search = qs.stringify(filteredParams, {
                 encode: true,
                 arrayFormat: "brackets",
             });
-            location.hash = newHash;
         } else {
-            location.hash = "";
+            // Clear query parameters
+            url.search = "";
         }
+
+        // Update the URL without reloading the page
+        history.replaceState(null, "", url.toString());
     },
     removeItem: (key): void => {
-        location.hash = "";
+        const url = new URL(location.href);
+        url.search = "";
+        history.replaceState(null, "", url.toString());
     },
 };
 
@@ -298,7 +304,7 @@ export const useGlobalStore = create<GlobalState>()(
         }),
         {
             name: "global-state",
-            storage: createJSONStorage(() => hashStorage),
+            storage: createJSONStorage(() => queryStorage),
             // Only persist URL-relevant fields
             partialize: (state): UrlState => ({
                 categoryFilter: state.categoryFilter,
