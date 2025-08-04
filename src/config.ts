@@ -27,15 +27,6 @@ export const courseCategories = [
 export const languages = ["en", "es", "ca"] as const;
 
 /**
- * Language labels dictionary
- */
-export const languageLabels = {
-    en: "English",
-    es: "Español",
-    ca: "Català",
-} as const;
-
-/**
  * Default language setting
  */
 export const defaultLanguage = "en" as const;
