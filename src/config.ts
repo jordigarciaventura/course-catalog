@@ -3,6 +3,8 @@
  * Contains all the core data structures for the course catalog
  */
 
+import type { FilterPanelState } from "./types";
+
 /**
  * Course categories configuration
  */

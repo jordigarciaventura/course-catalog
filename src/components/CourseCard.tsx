@@ -6,21 +6,19 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import type { Language, Course } from "@/types";
+import type { Course } from "@/types";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { cn } from "@/lib/utils";
+import { useCurrentLanguage } from "@/hooks/useLanguage";
 
 interface Props {
     course: Course;
-    currentLanguage: Language;
     className?: string;
 }
 
-export const CourseCard: React.FC<Props> = ({
-    course,
-    currentLanguage,
-    className,
-}) => {
+export const CourseCard: React.FC<Props> = ({ course, className }) => {
+    const currentLanguage = useCurrentLanguage();
+
     const title = course.title[currentLanguage];
     const description = course.description[currentLanguage];
     const duration = course.duration;
@@ -35,10 +33,7 @@ export const CourseCard: React.FC<Props> = ({
             )}
         >
             <CardHeader className="p-0">
-                <CategoryBadge
-                    courseCategory={category}
-                    currentLanguage={currentLanguage}
-                />
+                <CategoryBadge courseCategory={category} />
 
                 <div className="flex gap-4 items-center pt-4 pb-2">
                     <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-3 size-16 flex items-center justify-center flex-shrink-0">

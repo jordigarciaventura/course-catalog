@@ -1,42 +1,34 @@
 import { Button } from "./ui/button";
 import { Calendar } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
-import type { Language } from "@/types";
 import { cn } from "@/lib/utils";
+import { useCurrentLanguage } from "@/hooks/useLanguage";
+import { useGlobalStore } from "@/state";
 
 interface Props {
-    currentLanguage: Language;
-    showYearFilter: boolean;
-    onToggle: (show: boolean) => void;
     className?: string;
 }
 
-export function YearFilterToggle({
-    currentLanguage,
-    showYearFilter,
-    onToggle,
-    className,
-}: Props) {
+export function YearFilterToggle({ className }: Props) {
+    const currentLanguage = useCurrentLanguage();
     const t = useTranslation(currentLanguage);
 
-    const handleToggle = () => {
-        const newShowState = !showYearFilter;
-        onToggle(newShowState);
-    };
+    const filterByYear = useGlobalStore((state) => state.filterByYear);
+    const setFilterByYear = useGlobalStore((state) => state.setFilterByYear);
 
     return (
         <Button
             variant="outline"
             size="icon"
-            onClick={handleToggle}
+            onClick={() => setFilterByYear(!filterByYear)}
             title={
-                showYearFilter
+                filterByYear
                     ? t("index.hideYearFilter")
                     : t("index.showYearFilter")
             }
             className={cn(
                 "transition-colors flex-1",
-                showYearFilter && "bg-accent text-accent-foreground",
+                filterByYear && "bg-accent text-accent-foreground",
                 className
             )}
         >

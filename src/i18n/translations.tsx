@@ -78,15 +78,30 @@ export const ui = {
             ca: "No s'han trobat cursos",
         } as MultilingualText,
         searchResults: {
-            en: (count: number) =>
-                count === 1 ? "1 course found" : `${count} courses found`,
-            es: (count: number) =>
-                count === 1
-                    ? "1 curso encontrado"
-                    : `${count} cursos encontrados`,
-            ca: (count: number) =>
-                count === 1 ? "1 curs trobat" : `${count} cursos trobats`,
+            en: (count: number, total: number) =>
+                count === 1 && total === 1
+                    ? "1 course shown"
+                    : total === count
+                    ? `${count} courses shown`
+                    : `${count} of ${total} courses shown`,
+            es: (count: number, total: number) =>
+                count === 1 && total === 1
+                    ? "1 curso mostrado"
+                    : total === count
+                    ? `${count} cursos mostrados`
+                    : `${count} de ${total} cursos mostrados`,
+            ca: (count: number, total: number) =>
+                count === 1 && total === 1
+                    ? "1 curs mostrat"
+                    : total === count
+                    ? `${count} cursos mostrats`
+                    : `${count} de ${total} cursos mostrats`,
         },
+        clearFilters: {
+            en: "Clear filters",
+            es: "Limpiar filtros",
+            ca: "Netejar filtres",
+        } as MultilingualText,
         filterByCategory: {
             en: "Filter by category",
             es: "Filtrar por categoría",
@@ -128,6 +143,11 @@ export const ui = {
             en: "Error occurred",
             es: "Ocurrió un error",
             ca: "S'ha produït un error",
+        } as MultilingualText,
+        category: {
+            en: "Category",
+            es: "Categoría",
+            ca: "Categoria",
         } as MultilingualText,
     },
 } as const;

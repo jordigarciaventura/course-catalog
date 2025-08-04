@@ -8,6 +8,7 @@ import { Toggle } from "astro-theme-toggle";
 import { getAllCourses } from "@/lib/courseLoader";
 import { getCurrentLanguageFromPath } from "@/lib/language";
 import { languages } from "@/config";
+import { useGlobalStore } from "@/state";
 
 // Get the language from the URL parameter (or undefined for default route)
 const { lang } = Astro.params;
@@ -53,11 +54,7 @@ export async function getStaticPaths() {
                 <Toggle style="width: 32px; height: 32px;" />
                 <LanguageSelect className="w-48" client:load />
             </div>
-            <CourseGrid
-                courses={courses}
-                currentLanguage={currentLanguage}
-                client:load
-            />
+            <CourseGrid allCourses={courses} client:load />
 
             <!-- Invisible content for Pagefind indexing -->
             <div class="hidden" data-pagefind-body>

@@ -60,3 +60,14 @@ export interface Course {
     iconUrl: string;
     category: CourseCategory;
 }
+
+export type CourseCategoryFilter = "all" | CourseCategory;
+
+export type FilterPanelState = {
+    searchQuery: string;
+    selectedCategory: CourseCategoryFilter;
+    olderFirst: boolean;
+    filterByYear: boolean;
+    sinceYear: number | null;
+    untilYear: number | null;
+};

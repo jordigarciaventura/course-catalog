@@ -1,47 +1,38 @@
 import { Button } from "@/components/ui/button";
+import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/useTranslation";
-import type { Language } from "@/types";
 import { cn } from "@/lib/utils";
+import { useGlobalStore } from "@/state";
 import { ArrowDown01, ArrowUp01 } from "lucide-react";
 
-export type SortOrder = "asc" | "desc";
-
-interface SortToggleProps {
-    currentLanguage: Language;
-    sortOrder: SortOrder;
-    onSortChange: (order: SortOrder) => void;
+interface Props {
     className?: string;
 }
 
-export function SortToggle({
-    currentLanguage,
-    sortOrder,
-    onSortChange,
-    className,
-}: SortToggleProps) {
+export function SortToggle({ className }: Props) {
+    const currentLanguage = useCurrentLanguage();
     const t = useTranslation(currentLanguage);
 
-    const handleToggle = () => {
-        onSortChange(sortOrder === "asc" ? "desc" : "asc");
-    };
-
-    const isAscending = sortOrder === "asc";
+    const olderFirst = useGlobalStore((state) => state.olderFirst);
+    const setOlderFirst = useGlobalStore((state) => state.setOlderFirst);
 
     return (
         <Button
             variant="outline"
             size="default"
-            onClick={handleToggle}
+            onClick={() => {
+                setOlderFirst(!olderFirst);
+            }}
             className={cn("flex items-center gap-2 min-w-[40px]", className)}
             title={
-                isAscending
+                olderFirst
                     ? t("index.sortTooltipAsc")
                     : t("index.sortTooltipDesc")
             }
         >
-            {isAscending ? <ArrowDown01 size={16} /> : <ArrowUp01 size={16} />}
+            {olderFirst ? <ArrowDown01 size={16} /> : <ArrowUp01 size={16} />}
             <span>
-                {isAscending
+                {olderFirst
                     ? t("index.sortAscending")
                     : t("index.sortDescending")}
             </span>

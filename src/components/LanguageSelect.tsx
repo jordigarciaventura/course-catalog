@@ -10,11 +10,11 @@ import { languages, languageLabels } from "@/config";
 import type { Language } from "@/types";
 import { getCurrentLanguageFromPath, navigateToLanguage } from "@/lib/language";
 
-interface LanguageSelectProps {
+interface Props {
     className?: string;
 }
 
-export function LanguageSelect({ className = "w-48" }: LanguageSelectProps) {
+export function LanguageSelect({ className = "w-48" }: Props) {
     const [currentLanguage, setCurrentLanguage] = useState<Language>(() =>
         getCurrentLanguageFromPath()
     );

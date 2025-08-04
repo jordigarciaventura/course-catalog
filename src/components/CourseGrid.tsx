@@ -1,144 +1,54 @@
 import * as React from "react";
 import { CourseCard } from "./CourseCard";
 import { CourseFilterPanel } from "./CourseFilterPanel";
-import { type SortOrder } from "./SortToggle";
-import { type YearRange } from "./YearRangePicker";
-import type { Course, Language } from "@/types";
+import type { Course } from "@/types";
 import { ui } from "@/i18n/translations";
+import { Button } from "@/components/ui/button";
+import { useGlobalStore } from "@/state";
+import { useCurrentLanguage } from "@/hooks/useLanguage";
+import { useEffect } from "react";
 
-interface CourseGridProps {
-    courses: Course[];
-    currentLanguage: Language;
+interface Props {
+    allCourses: Course[];
 }
 
-export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
-    const [selectedCategory, setSelectedCategory] =
-        React.useState<string>("all");
-    const [sortOrder, setSortOrder] = React.useState<SortOrder>("desc");
-    const [yearRange, setYearRange] = React.useState<YearRange>({
-        from: undefined,
-        to: undefined,
-    });
-    const [filterByYear, setFilterByYear] = React.useState(false);
-    const [searchResults, setSearchResults] = React.useState<Course[]>(courses);
+export function CourseGrid({ allCourses }: Props) {
+    const currentLanguage = useCurrentLanguage();
 
-    // Utility function to extract year from DD/MM/YYYY format
-    const getCourseYear = (dateString: string): number => {
-        const [day, month, year] = dateString.split("/");
+    const storeCourses = useGlobalStore((state) => state.allCourses);
+    const setCourses = useGlobalStore((state) => state.setAllCourses);
+    const courses = storeCourses || allCourses;
 
-        // Validate the date parts
-        if (!day || !month || !year) {
-            console.warn(
-                `Invalid date format: ${dateString}. Expected DD/MM/YYYY.`
-            );
-            return 0; // Return 0 as fallback
-        }
+    const resetFilters = useGlobalStore((state) => state.resetFilters);
+    const filteredAndSortedCourses = useGlobalStore(
+        (state) => state.filteredAndSortedCourses
+    );
+    const hasAnyFilterActive = useGlobalStore((state) =>
+        state.hasAnyActiveFilters()
+    );
 
-        const yearNum = parseInt(year, 10);
-
-        // Validate that the year is valid
-        if (isNaN(yearNum)) {
-            console.warn(`Invalid year in date: ${dateString}`);
-            return 0; // Return 0 as fallback
-        }
-
-        return yearNum;
-    };
-
-    // Update search results when courses change
-    React.useEffect(() => {
-        setSearchResults(courses);
-    }, [courses]);
-
-    const handleToggleYearFilter = (show: boolean) => {
-        setFilterByYear(show);
-    };
-
-    // Filter and sort courses based on selected category, year range, and sort order
-    const filteredAndSortedCourses = React.useMemo(() => {
-        let filtered = searchResults;
-
-        // Filter by category
-        if (selectedCategory !== "all") {
-            filtered = filtered.filter(
-                (course) => course.category === selectedCategory
-            );
-        }
-
-        // Filter by year range
-        if (filterByYear && (yearRange.from || yearRange.to)) {
-            filtered = filtered.filter((course) => {
-                // Extract year from course date (DD/MM/YYYY format) using utility function
-                const courseYear = getCourseYear(course.date);
-
-                // Check if course year is within the selected range
-                if (yearRange.from && yearRange.to) {
-                    return (
-                        courseYear >= yearRange.from &&
-                        courseYear <= yearRange.to
-                    );
-                } else if (yearRange.from) {
-                    return courseYear >= yearRange.from;
-                } else if (yearRange.to) {
-                    return courseYear <= yearRange.to;
-                }
-
-                return true;
-            });
-        }
-
-        // Sort by date (DD/MM/YYYY format) - still using full date for precision
-        const sorted = [...filtered].sort((a, b) => {
-            // Parse dates for precise sorting
-            const [dayA, monthA, yearA] = a.date.split("/");
-            const [dayB, monthB, yearB] = b.date.split("/");
-
-            const dateA = new Date(
-                parseInt(yearA),
-                parseInt(monthA) - 1,
-                parseInt(dayA)
-            );
-            const dateB = new Date(
-                parseInt(yearB),
-                parseInt(monthB) - 1,
-                parseInt(dayB)
-            );
-
-            if (sortOrder === "asc") {
-                return dateA.getTime() - dateB.getTime(); // Older first
-            } else {
-                return dateB.getTime() - dateA.getTime(); // Newer first
-            }
-        });
-
-        return sorted;
-    }, [
-        searchResults,
-        selectedCategory,
-        sortOrder,
-        yearRange,
-        currentLanguage,
-        filterByYear,
-    ]);
+    useEffect(() => setCourses(allCourses), []);
 
     return (
         <div className="flex flex-col gap-6">
-            <CourseFilterPanel
-                courses={courses}
-                currentLanguage={currentLanguage}
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-                sortOrder={sortOrder}
-                onSortChange={setSortOrder}
-                yearRange={yearRange}
-                onToggleYearFilter={handleToggleYearFilter}
-                onYearRangeChange={setYearRange}
-                onSearchResults={setSearchResults}
-            />
+            <CourseFilterPanel />
             {filteredAndSortedCourses.length > 0 && (
-                <div className="text-sm text-muted-foreground">
-                    {ui.index.searchResults[currentLanguage](
-                        filteredAndSortedCourses.length
+                <div className="flex items-center justify-between">
+                    <div className="text-sm text-muted-foreground">
+                        {ui.index.searchResults[currentLanguage](
+                            filteredAndSortedCourses.length,
+                            courses.length
+                        )}
+                    </div>
+                    {hasAnyFilterActive && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => resetFilters()}
+                            className="text-xs"
+                        >
+                            {ui.index.clearFilters[currentLanguage]}
+                        </Button>
                     )}
                 </div>
             )}
@@ -172,7 +82,6 @@ export function CourseGrid({ courses, currentLanguage }: CourseGridProps) {
                             <div key={course.id} className={gridClasses}>
                                 <CourseCard
                                     course={course}
-                                    currentLanguage={currentLanguage}
                                     className="h-full"
                                 />
                             </div>

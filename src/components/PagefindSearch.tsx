@@ -2,24 +2,24 @@ import * as React from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { Language, Course } from "@/types";
 import { ui } from "@/i18n/translations";
+import { useCurrentLanguage } from "@/hooks/useLanguage";
+import { useGlobalStore } from "@/state";
 
-interface PagefindSearchProps {
-    currentLanguage: Language;
-    courses: Course[];
-    onSearchResults: (results: Course[]) => void;
+interface Props {
     className?: string;
 }
 
-export function PagefindSearch({
-    currentLanguage,
-    courses,
-    onSearchResults,
-    className = "",
-}: PagefindSearchProps) {
-    const [searchQuery, setSearchQuery] = React.useState<string>("");
+export function PagefindSearch({ className }: Props) {
+    const currentLanguage = useCurrentLanguage();
+
+    const searchQuery = useGlobalStore((state) => state.searchQuery);
+    const setSearchQuery = useGlobalStore((state) => state.setSearchQuery);
+
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+    const courses = useGlobalStore((state) => state.allCourses);
+    const setSearchResults = useGlobalStore((state) => state.setSearchResults);
 
     // Debounce search to avoid too many API calls
     const [debouncedQuery, setDebouncedQuery] = React.useState<string>("");
@@ -35,8 +35,10 @@ export function PagefindSearch({
     // Perform search when debounced query changes
     React.useEffect(() => {
         const performSearch = async () => {
+            // If query is empty, reset to show all courses
             if (!debouncedQuery.trim()) {
-                onSearchResults(courses);
+                setSearchResults(courses);
+                setIsLoading(false);
                 return;
             }
 
@@ -64,7 +66,7 @@ export function PagefindSearch({
                             foundCourseIds.has(course.id)
                         );
 
-                        onSearchResults(filteredCourses);
+                        setSearchResults(filteredCourses);
                     } else {
                         // If no Pagefind results, fallback to client-side search
                         performClientSideSearch();
@@ -92,11 +94,11 @@ export function PagefindSearch({
                     course.description[currentLanguage].toLowerCase();
                 return title.includes(query) || description.includes(query);
             });
-            onSearchResults(filtered);
+            setSearchResults(filtered);
         };
 
         performSearch();
-    }, [debouncedQuery, courses, currentLanguage, onSearchResults]);
+    }, [debouncedQuery, currentLanguage, courses]);
 
     // Load Pagefind when component mounts
     React.useEffect(() => {
@@ -125,10 +127,6 @@ export function PagefindSearch({
 
     const placeholder = ui.index.searchPlaceholder[currentLanguage];
 
-    const clearSearch = () => {
-        setSearchQuery("");
-    };
-
     return (
         <div className={`relative ${className}`}>
             <Search
@@ -148,7 +146,7 @@ export function PagefindSearch({
                 <Button
                     variant="ghost"
                     size="sm"
-                    onClick={clearSearch}
+                    onClick={() => setSearchQuery("")}
                     className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0"
                 >
                     <X className="h-3 w-3" />

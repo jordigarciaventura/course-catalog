@@ -8,27 +8,21 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useTranslation } from "@/i18n/useTranslation";
-import type { Language } from "@/types";
-
-export interface YearRange {
-    from?: number;
-    to?: number;
-}
+import { useCurrentLanguage } from "@/hooks/useLanguage";
+import { useGlobalStore } from "@/state";
 
 interface Props {
-    currentLanguage: Language;
-    yearRange: YearRange;
-    onYearRangeChange: (range: YearRange) => void;
     className?: string;
 }
 
-export function YearRangePicker({
-    currentLanguage,
-    yearRange,
-    onYearRangeChange,
-    className,
-}: Props) {
+export function YearRangePicker({ className }: Props) {
+    const currentLanguage = useCurrentLanguage();
     const t = useTranslation(currentLanguage);
+
+    const sinceyear = useGlobalStore((state) => state.sinceYear);
+    const untilYear = useGlobalStore((state) => state.untilYear);
+    const setSinceYear = useGlobalStore((state) => state.setSinceYear);
+    const setUntilYear = useGlobalStore((state) => state.setUntilYear);
 
     // Generate year options - from 2022 to current year + 2
     const currentYear = new Date().getFullYear();
@@ -39,57 +33,29 @@ export function YearRangePicker({
 
     const handleFromYearChange = (year: string) => {
         if (year === "none") {
-            const newRange: YearRange = {
-                from: undefined,
-                to: yearRange.to,
-            };
-            onYearRangeChange(newRange);
+            setSinceYear(null);
             return;
         }
 
-        const yearNum = parseInt(year);
-        // If "to" year exists and is less than the new "from" year, clear it
-        const newRange: YearRange = {
-            from: yearNum,
-            to:
-                yearRange.to && yearRange.to >= yearNum
-                    ? yearRange.to
-                    : undefined,
-        };
-        onYearRangeChange(newRange);
+        setSinceYear(parseInt(year));
     };
 
     const handleToYearChange = (year: string) => {
         if (year === "none") {
-            const newRange: YearRange = {
-                from: yearRange.from,
-                to: undefined,
-            };
-            onYearRangeChange(newRange);
+            setUntilYear(null);
             return;
         }
 
-        const yearNum = parseInt(year);
-        // If "from" year exists and is greater than the new "to" year, clear it
-        const newRange: YearRange = {
-            from:
-                yearRange.from && yearRange.from <= yearNum
-                    ? yearRange.from
-                    : undefined,
-            to: yearNum,
-        };
-        onYearRangeChange(newRange);
+        setUntilYear(parseInt(year));
     };
 
     // Filter available years for "to" select based on "from" selection
-    const availableToYears = yearRange.from
-        ? years.filter((year) => year >= yearRange.from!)
-        : years;
+    const availableToYears =
+        sinceyear != null ? years.filter((year) => year >= sinceyear!) : years;
 
     // Filter available years for "from" select based on "to" selection
-    const availableFromYears = yearRange.to
-        ? years.filter((year) => year <= yearRange.to!)
-        : years;
+    const availableFromYears =
+        untilYear != null ? years.filter((year) => year <= untilYear!) : years;
 
     return (
         <fieldset className={cn("space-y-2", className)}>
@@ -103,7 +69,7 @@ export function YearRangePicker({
                         {t("index.startDate")}
                     </label>
                     <Select
-                        value={yearRange.from?.toString() || "none"}
+                        value={sinceyear?.toString() || "none"}
                         onValueChange={handleFromYearChange}
                     >
                         <SelectTrigger id="year-from" className="w-full">
@@ -134,7 +100,7 @@ export function YearRangePicker({
                         {t("index.endDate")}
                     </label>
                     <Select
-                        value={yearRange.to?.toString() || "none"}
+                        value={untilYear?.toString() || "none"}
                         onValueChange={handleToYearChange}
                     >
                         <SelectTrigger id="year-to" className="w-full">

@@ -1,11 +1,8 @@
+import { useCurrentLanguage } from "@/hooks/useLanguage";
+import { useTranslation } from "@/i18n/useTranslation";
 import { getCategory } from "@/lib/category";
 import { cn } from "@/lib/utils";
-import type {
-    Category,
-    CourseCategory,
-    Language,
-    CategoryColor,
-} from "@/types";
+import type { Category, CourseCategory, CategoryColor } from "@/types";
 
 // Color mapping with theme-aware classes for better light/dark theme support
 const colorMap: Record<CategoryColor, string> = {
@@ -24,15 +21,14 @@ const colorMap: Record<CategoryColor, string> = {
 
 interface Props {
     courseCategory: CourseCategory;
-    currentLanguage: Language;
 }
 
-export function CategoryBadge({
-    courseCategory,
-    currentLanguage: currentLangauge,
-}: Props) {
+export function CategoryBadge({ courseCategory }: Props) {
+    const currentLanguage = useCurrentLanguage();
+    const t = useTranslation(currentLanguage);
+
     const category = getCategory(courseCategory) as Category;
-    const label = category?.label[currentLangauge] || category?.label.en;
+    const label = category?.label[currentLanguage] || category?.label.en;
     const icon = category?.icon;
 
     const colorClasses = colorMap[category.color] || colorMap.slate;
@@ -44,7 +40,7 @@ export function CategoryBadge({
                 "inline-flex items-center text-xs font-medium px-3 py-1 rounded-full border w-fit"
             )}
             role="badge"
-            aria-label={`Category: ${label}`}
+            aria-label={`${t("common.category")}: ${label}`}
         >
             {icon && (
                 <span
@@ -54,7 +50,7 @@ export function CategoryBadge({
                     {icon}
                 </span>
             )}
-            <span className="sr-only">Category: </span>
+            <span className="sr-only">{t("common.category")}: </span>
             {label}
         </span>
     );
