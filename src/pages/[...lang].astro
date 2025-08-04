@@ -10,6 +10,7 @@ import { getCurrentLanguageFromPath } from "@/lib/language";
 import { languages } from "@/config";
 import { useGlobalStore } from "@/state";
 import Hero from "@/components/Hero.astro";
+import { getHeroStats } from "@/lib/courseStats";
 
 // Get the language from the URL parameter (or undefined for default route)
 const { lang } = Astro.params;
@@ -26,6 +27,9 @@ if (lang && !languages.includes(lang as Language)) {
 
 // Get all courses from the .tsx files
 const courses = await getAllCourses();
+
+// Calculate course statistics using utility function
+const courseStats = getHeroStats(courses);
 
 // Get translations for current language
 const t = useTranslation(currentLanguage);
@@ -59,7 +63,11 @@ export async function getStaticPaths() {
                     <LanguageSelect client:load />
                 </div>
 
-                <Hero />
+                <Hero
+                    totalCourses={courseStats.totalCourses}
+                    totalHours={courseStats.totalHours}
+                    firstYear={courseStats.firstYear}
+                />
             </div>
 
             <CourseGrid allCourses={courses} client:load />

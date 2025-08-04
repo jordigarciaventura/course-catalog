@@ -3,6 +3,14 @@ import { getLangFromUrl, useTranslation } from "@/i18n/utils";
 import { Calendar, CheckCircle, Clock, Icon } from "@lucide/astro";
 import StatsCard from "./StatsCard.astro";
 
+interface Props {
+    totalCourses?: number;
+    totalHours?: number;
+    firstYear?: number;
+}
+
+const { totalCourses = 5, totalHours = 130, firstYear = 2020 } = Astro.props;
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslation(lang);
 ---
@@ -39,13 +47,19 @@ const t = useTranslation(lang);
 
     <!-- Stats Cards -->
     <div class="relative z-10 flex gap-8 mt-8 h-48 w-lg">
-        <StatsCard value="5" label={t("index.coursesCompleted")}>
+        <StatsCard
+            value={totalCourses.toString()}
+            label={t("index.coursesCompleted")}
+        >
             <CheckCircle class="size-8" slot="icon" />
         </StatsCard>
-        <StatsCard value="130h" label={t("index.totalHours")}>
+        <StatsCard value={`${totalHours}h`} label={t("index.totalHours")}>
             <Clock class="size-8" slot="icon" />
         </StatsCard>
-        <StatsCard value="2020" label={t("index.learningSince")}>
+        <StatsCard
+            value={firstYear.toString()}
+            label={t("index.learningSince")}
+        >
             <Calendar class="size-8" slot="icon" />
         </StatsCard>
     </div>
