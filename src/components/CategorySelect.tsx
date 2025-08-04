@@ -5,18 +5,21 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import categories from "@/content/categories";
 import { useTranslation } from "@/i18n/useTranslation";
 import type { CourseCategoryFilter } from "@/types";
 import { cn } from "@/lib/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { useGlobalStore } from "@/state";
+import { useState, useEffect } from "react";
 
 interface Props {
     className?: string;
 }
 
 export function CategorySelect({ className }: Props) {
+    const [isLoading, setIsLoading] = useState(true);
     const currentLanguage = useCurrentLanguage();
     const t = useTranslation(currentLanguage);
 
@@ -25,6 +28,15 @@ export function CategorySelect({ className }: Props) {
     );
     const categoryFilter = useGlobalStore((state) => state.categoryFilter);
 
+    // Handle initial loading state
+    useEffect(() => {
+        setIsLoading(false);
+    }, []);
+
+    if (isLoading) {
+        return <Skeleton className={cn("h-9 w-[200px]", className)} />;
+    }
+
     return (
         <Select
             value={categoryFilter}
@@ -32,13 +44,21 @@ export function CategorySelect({ className }: Props) {
                 setCategoryFilter(value as CourseCategoryFilter)
             }
         >
-            <SelectTrigger className={cn("w-[200px]", className)}>
+            <SelectTrigger
+                className={cn("w-[200px] cursor-pointer", className)}
+            >
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="all">{t("index.allCategories")}</SelectItem>
+                <SelectItem value="all" className="cursor-pointer">
+                    {t("index.allCategories")}
+                </SelectItem>
                 {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
+                    <SelectItem
+                        key={category.id}
+                        value={category.id}
+                        className="cursor-pointer"
+                    >
                         <span className="flex items-center gap-2">
                             {category.icon}
                             {category.label[currentLanguage]}

@@ -2,9 +2,11 @@ import * as React from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ui } from "@/i18n/translations";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { useGlobalStore } from "@/state";
+import { cn } from "@/lib/utils";
 
 interface Props {
     className?: string;
@@ -15,6 +17,8 @@ export function PagefindSearch({ className }: Props) {
 
     const searchQuery = useGlobalStore((state) => state.searchQuery);
     const setSearchQuery = useGlobalStore((state) => state.setSearchQuery);
+
+    const [componentMounted, setComponentMounted] = React.useState(false);
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -114,11 +118,15 @@ export function PagefindSearch({ className }: Props) {
                                 window as any
                             ).pagefind.init();
                         }
+                        setComponentMounted(true);
                     };
                     document.head.appendChild(script);
                 } catch (error) {
                     console.warn("Could not load Pagefind:", error);
+                    setComponentMounted(true);
                 }
+            } else {
+                setComponentMounted(true);
             }
         };
 
@@ -126,6 +134,10 @@ export function PagefindSearch({ className }: Props) {
     }, []);
 
     const placeholder = ui.index.searchPlaceholder[currentLanguage];
+
+    if (!componentMounted) {
+        return <Skeleton className={cn("h-9", className)} />;
+    }
 
     return (
         <div className={`relative ${className}`}>

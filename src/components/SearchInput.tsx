@@ -1,19 +1,32 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { useGlobalStore } from "@/state";
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface SearchInputProps {
     className?: string;
 }
 
 export function SearchInput({ className }: SearchInputProps) {
+    const [isLoading, setIsLoading] = useState(true);
     const currentLanguage = useCurrentLanguage();
     const t = useTranslation(currentLanguage);
 
     const searchQuery = useGlobalStore((state) => state.searchQuery);
     const setSearchQuery = useGlobalStore((state) => state.setSearchQuery);
+
+    // Handle initial loading state
+    useEffect(() => {
+        setIsLoading(false);
+    }, []);
+
+    if (isLoading) {
+        return <Skeleton className={cn("h-10", className)} />;
+    }
 
     return (
         <div className={`relative ${className}`}>
