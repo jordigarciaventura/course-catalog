@@ -59,25 +59,37 @@ export function LanguageSelect({ className }: Props) {
     }, [currentLanguage]);
 
     if (isLoading || !currentLanguage) {
-        return <Skeleton className={cn("h-9 w-24", className)} />;
+        return (
+            <Skeleton
+                className={cn(
+                    "h-9 w-24 backdrop-blur-md bg-white/10 dark:bg-white-800/30 border-none",
+                    className
+                )}
+            />
+        );
     }
 
     return (
         <Select value={currentLanguage} onValueChange={handleValueChange}>
-            <SelectTrigger className={cn("w-24 cursor-pointer", className)}>
+            <SelectTrigger
+                className={cn(
+                    "w-24 cursor-pointer border-none bg-transparent shadow-none hover:bg-transparent focus:ring-0 focus:ring-offset-0 text-white",
+                    className
+                )}
+            >
                 <SelectValue>
-                    <span className="flex items-center gap-2">
-                        <Globe className="size-4" />
+                    <span className="flex items-center gap-2 text-white">
+                        <Globe className="size-4 text-white" />
                         {currentLanguage.toUpperCase()}
                     </span>
                 </SelectValue>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="border-none backdrop-blur-md bg-white/10 dark:bg-white-800/30">
                 {languages.map((language) => (
                     <SelectItem
                         key={language}
                         value={language}
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:bg-white/20 dark:hover:bg-slate-700/40 focus:bg-white/20 dark:focus:bg-slate-700/40 text-white [&_svg]:text-white"
                     >
                         {language.toUpperCase()}
                     </SelectItem>

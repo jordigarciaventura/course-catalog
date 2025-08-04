@@ -1,7 +1,7 @@
 /**
  * Example usage of the useTranslation hook demonstrating type safety
  */
-import { useTranslation } from "./useTranslation";
+import { useTranslation } from "./utils";
 import type { Language } from "@/types";
 
 // Example function showing how to use the translation hook

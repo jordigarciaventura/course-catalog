@@ -2,13 +2,14 @@
 import { LanguageSelect } from "@/components/LanguageSelect";
 import { CourseGrid } from "@/components/CourseGrid";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { useTranslation } from "@/i18n/useTranslation";
+import { useTranslation } from "@/i18n/utils";
 import type { Language } from "@/types";
 import { Toggle } from "astro-theme-toggle";
 import { getAllCourses } from "@/lib/courseLoader";
 import { getCurrentLanguageFromPath } from "@/lib/language";
 import { languages } from "@/config";
 import { useGlobalStore } from "@/state";
+import Hero from "@/components/Hero.astro";
 
 // Get the language from the URL parameter (or undefined for default route)
 const { lang } = Astro.params;
@@ -48,12 +49,19 @@ export async function getStaticPaths() {
     <div
         class="flex flex-col items-center min-h-screen bg-background text-foreground"
     >
-        <div class="flex flex-col w-full max-w-4xl gap-8 p-8">
-            <div class="flex justify-end gap-6 items-center">
-                <Toggle style="width: 24px; height: 24px;" />
-                <LanguageSelect client:load />
+        <div class="flex flex-col w-full gap-8 items-center">
+            <div
+                class="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4"
+            >
+                <!-- Top bar -->
+                <div class="flex justify-end gap-6 items-center">
+                    <Toggle style="width: 20px; height: 20px; color:white" />
+                    <LanguageSelect client:load />
+                </div>
+
+                <Hero />
             </div>
-            <h1>{t("index.title")}</h1>
+
             <CourseGrid allCourses={courses} client:load />
 
             <!-- Invisible content for Pagefind indexing -->

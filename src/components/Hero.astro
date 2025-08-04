@@ -1,0 +1,52 @@
+---
+import { getLangFromUrl, useTranslation } from "@/i18n/utils";
+import { Calendar, CheckCircle, Clock, Icon } from "@lucide/astro";
+import StatsCard from "./StatsCard.astro";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslation(lang);
+---
+
+<div class="relative flex w-full flex-col items-center py-12 min-h-[400px]">
+    <!-- Background pattern for glassmorphism effect -->
+    <div class="absolute inset-0 opacity-30 dark:opacity-20">
+        <div
+            class="absolute top-10 left-10 w-32 h-32 bg-white dark:bg-slate-300 rounded-full blur-xl"
+        >
+        </div>
+        <div
+            class="absolute top-40 right-20 w-24 h-24 bg-yellow-200 dark:bg-blue-400 rounded-full blur-lg"
+        >
+        </div>
+        <div
+            class="absolute bottom-20 left-1/3 w-40 h-40 bg-pink-200 dark:bg-purple-400 rounded-full blur-2xl"
+        >
+        </div>
+        <div
+            class="absolute bottom-10 right-10 w-28 h-28 bg-blue-200 dark:bg-indigo-400 rounded-full blur-xl"
+        >
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center">
+        <h1 class="text-white dark:text-slate-100 text-4xl font-bold mb-4">
+            {t("index.title")}
+        </h1>
+        <p class="text-white/90 dark:text-slate-200/90 text-lg mb-8">
+            {t("index.subtitle")}
+        </p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="relative z-10 flex gap-8 mt-8 h-48 w-lg">
+        <StatsCard value="5" label={t("index.coursesCompleted")}>
+            <CheckCircle class="size-8" slot="icon" />
+        </StatsCard>
+        <StatsCard value="130h" label={t("index.totalHours")}>
+            <Clock class="size-8" slot="icon" />
+        </StatsCard>
+        <StatsCard value="2020" label={t("index.learningSince")}>
+            <Calendar class="size-8" slot="icon" />
+        </StatsCard>
+    </div>
+</div>

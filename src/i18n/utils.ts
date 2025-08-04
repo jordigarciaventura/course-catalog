@@ -1,3 +1,4 @@
+import { defaultLanguage, languages } from "@/config";
 import { ui } from "./translations";
 import type { Language } from "@/types";
 
@@ -11,8 +12,8 @@ type DeepKeys<T> = T extends object
               ? T[K] extends { en: string; es: string; ca: string }
                   ? K
                   : T[K] extends object
-                  ? `${K}.${DeepKeys<T[K]>}`
-                  : never
+                    ? `${K}.${DeepKeys<T[K]>}`
+                    : never
               : never;
       }[keyof T]
     : never;
@@ -52,3 +53,9 @@ export function useTranslation(language: Language) {
 
 // Export the translation key type for use in components
 export type { TranslationKey };
+
+export function getLangFromUrl(url: URL) {
+    const [, lang] = url.pathname.split("/");
+    if (languages.includes(lang as Language)) return lang as Language;
+    return defaultLanguage;
+}

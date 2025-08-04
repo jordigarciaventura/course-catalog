@@ -1,5 +1,5 @@
 import { useCurrentLanguage } from "@/hooks/useLanguage";
-import { useTranslation } from "@/i18n/useTranslation";
+import { useTranslation } from "@/i18n/utils";
 import { getCategory } from "@/lib/category";
 import { cn } from "@/lib/utils";
 import type { Category, CourseCategory, CategoryColor } from "@/types";

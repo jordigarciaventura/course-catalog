@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
-import { useTranslation } from "@/i18n/useTranslation";
+import { useTranslation } from "@/i18n/utils";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/state";
 import { ArrowDown01, ArrowUp01 } from "lucide-react";

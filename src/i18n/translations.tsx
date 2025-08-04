@@ -132,6 +132,21 @@ export const ui = {
             es: "Filtrar por año",
             ca: "Filtrar per any",
         } as MultilingualText,
+        coursesCompleted: {
+            en: "Completed\nCourses",
+            es: "Cursos\nCompletados",
+            ca: "Cursos\nCompletats",
+        } as MultilingualText,
+        totalHours: {
+            en: "Total\nHours",
+            es: "Horas\nTotales",
+            ca: "Hores\nTotals",
+        } as MultilingualText,
+        learningSince: {
+            en: "Learning\nSince",
+            es: "Aprendiendo\nDesde",
+            ca: "Aprenent\nDes De",
+        } as MultilingualText,
     },
     common: {
         loading: {

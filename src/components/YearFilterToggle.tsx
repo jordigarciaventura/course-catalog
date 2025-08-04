@@ -1,7 +1,7 @@
 import { Toggle } from "./ui/toggle";
 import { Skeleton } from "./ui/skeleton";
 import { Calendar } from "lucide-react";
-import { useTranslation } from "@/i18n/useTranslation";
+import { useTranslation } from "@/i18n/utils";
 import { cn } from "@/lib/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { useGlobalStore } from "@/state";

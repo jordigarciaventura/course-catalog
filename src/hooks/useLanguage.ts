@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import type { Language } from "@/types";
 import { getCurrentLanguageFromPath } from "@/lib/language";
-import { useTranslation as useTranslationBase } from "@/i18n/useTranslation";
+import { useTranslation as useTranslationBase } from "@/i18n/utils";
 
 /**
  * Hook to get current language from URL path

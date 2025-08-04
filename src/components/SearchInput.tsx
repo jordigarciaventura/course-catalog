@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTranslation } from "@/i18n/useTranslation";
+import { useTranslation } from "@/i18n/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { useGlobalStore } from "@/state";
 import { useState, useEffect } from "react";

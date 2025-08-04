@@ -1,4 +1,4 @@
-import { courseCategories, languages, languageLabels } from "@/config";
+import { courseCategories, languages } from "@/config";
 import type { JSX } from "react";
 
 /**
@@ -10,11 +10,6 @@ export type CourseCategory = (typeof courseCategories)[number];
  * Supported languages in the application - extracted from config
  */
 export type Language = (typeof languages)[number];
-
-/**
- * Language labels type - extracted from config
- */
-export type LanguageLabels = typeof languageLabels;
 
 /**
  * Multilingual text content - dynamically based on supported languages
