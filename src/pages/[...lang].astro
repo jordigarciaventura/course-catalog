@@ -50,50 +50,51 @@ export async function getStaticPaths() {
 ---
 
 <BaseLayout>
-    <div
-        class="flex flex-col items-center min-h-screen bg-background text-foreground"
-    >
-        <div class="flex flex-col w-full gap-8 items-center">
-            <div
-                class="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4"
-            >
-                <!-- Top bar -->
-                <div class="flex justify-end gap-6 items-center">
-                    <Toggle style="width: 20px; height: 20px; color:white" />
-                    <LanguageSelect client:load />
-                </div>
+    <>
+        <!-- Fixed/Sticky Header Section -->
 
-                <Hero
-                    totalCourses={courseStats.totalCourses}
-                    totalHours={courseStats.totalHours}
-                    firstYear={courseStats.firstYear}
-                />
+        <div
+            class="fixed top-0 left-0 right-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full h-screen p-4 shadow-lg backdrop-blur-sm"
+        >
+            <div class="flex justify-end gap-6 items-center">
+                <Toggle style="width: 20px; height: 20px; color:white" />
+                <LanguageSelect client:load />
             </div>
 
-            <CourseGrid allCourses={courses} client:load />
-
-            <!-- Invisible content for Pagefind indexing -->
-            <div class="hidden" data-pagefind-body>
-                {
-                    courses.map((course) => (
-                        <div
-                            data-pagefind-meta={`course_id:${course.id}`}
-                            data-pagefind-meta={`category:${course.category}`}
-                        >
-                            <h2>{course.title[currentLanguage]}</h2>
-                            <p>{course.description[currentLanguage]}</p>
-                            <span data-pagefind-meta={`date:${course.date}`}>
-                                {course.date}
-                            </span>
-                            <span
-                                data-pagefind-meta={`duration:${course.duration}`}
-                            >
-                                {course.duration}
-                            </span>
-                        </div>
-                    ))
-                }
-            </div>
+            <Hero
+                totalCourses={courseStats.totalCourses}
+                totalHours={courseStats.totalHours}
+                firstYear={courseStats.firstYear}
+            />
         </div>
-    </div>
+
+        <div class="fixed top-[80vh] h-screen w-full bg-white dark:bg-black">
+        </div>
+
+        <!-- Course Grid with top margin to account for fixed header -->
+        <CourseGrid allCourses={courses} client:load />
+
+        <!-- Invisible content for Pagefind indexing -->
+        <div class="hidden" data-pagefind-body>
+            {
+                courses.map((course) => (
+                    <div
+                        data-pagefind-meta={`course_id:${course.id}`}
+                        data-pagefind-meta={`category:${course.category}`}
+                    >
+                        <h2>{course.title[currentLanguage]}</h2>
+                        <p>{course.description[currentLanguage]}</p>
+                        <span data-pagefind-meta={`date:${course.date}`}>
+                            {course.date}
+                        </span>
+                        <span
+                            data-pagefind-meta={`duration:${course.duration}`}
+                        >
+                            {course.duration}
+                        </span>
+                    </div>
+                ))
+            }
+        </div>
+    </>
 </BaseLayout>

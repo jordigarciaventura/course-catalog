@@ -14,7 +14,12 @@ export function CourseFilterPanel({ className }: Props) {
     const filterByYear = useGlobalStore((state) => state.filterByYear);
 
     return (
-        <div className={cn("flex flex-col gap-4", className)}>
+        <div
+            className={cn(
+                "flex flex-col mt-2 gap-2 text-black dark:text-white",
+                className
+            )}
+        >
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-2">
                 <CategorySelect className="w-full sm:w-60 sm:flex-shrink-0" />
                 <PagefindSearch className="w-full sm:flex-1" />

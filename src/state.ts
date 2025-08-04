@@ -230,9 +230,10 @@ export const useGlobalStore = create<GlobalState>()(
                 return (
                     state.categoryFilter !==
                         URL_STATE_DEFAULTS.categoryFilter ||
-                    state.filterByYear !== URL_STATE_DEFAULTS.filterByYear ||
-                    state.sinceYear !== URL_STATE_DEFAULTS.sinceYear ||
-                    state.untilYear !== URL_STATE_DEFAULTS.untilYear ||
+                    (state.filterByYear !== URL_STATE_DEFAULTS.filterByYear &&
+                        (state.sinceYear !== URL_STATE_DEFAULTS.sinceYear ||
+                            state.untilYear !==
+                                URL_STATE_DEFAULTS.untilYear)) ||
                     state.searchQuery !== URL_STATE_DEFAULTS.searchQuery
                 );
             },
