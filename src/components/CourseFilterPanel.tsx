@@ -5,6 +5,7 @@ import { YearRangePicker } from "./YearRangePicker";
 import { YearFilterToggle } from "./YearFilterToggle";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/state";
+import { getYearRange } from "@/lib/courseStats";
 
 interface Props {
     className?: string;
@@ -12,6 +13,10 @@ interface Props {
 
 export function CourseFilterPanel({ className }: Props) {
     const filterByYear = useGlobalStore((state) => state.filterByYear);
+    const allCourses = useGlobalStore((state) => state.allCourses);
+
+    // Calculate min and max years from all courses using the utility function
+    const { minYear, maxYear } = getYearRange(allCourses);
 
     return (
         <div
@@ -32,12 +37,20 @@ export function CourseFilterPanel({ className }: Props) {
                     <YearFilterToggle className="flex flex-1 px-4 sm:max-w-fit" />
 
                     {filterByYear && (
-                        <YearRangePicker className="hidden sm:flex sm:flex-1" />
+                        <YearRangePicker
+                            className="hidden sm:flex sm:flex-1"
+                            minYear={minYear}
+                            maxYear={maxYear}
+                        />
                     )}
                 </div>
 
                 {filterByYear && (
-                    <YearRangePicker className="sm:hidden flex flex-col gap-2" />
+                    <YearRangePicker
+                        className="sm:hidden flex flex-col gap-2"
+                        minYear={minYear}
+                        maxYear={maxYear}
+                    />
                 )}
             </div>
         </div>

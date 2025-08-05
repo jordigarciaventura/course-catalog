@@ -13,9 +13,11 @@ import { useGlobalStore } from "@/state";
 
 interface Props {
     className?: string;
+    minYear?: number;
+    maxYear?: number;
 }
 
-export function YearRangePicker({ className }: Props) {
+export function YearRangePicker({ className, minYear, maxYear }: Props) {
     const currentLanguage = useCurrentLanguage();
     const t = useTranslation(currentLanguage);
 
@@ -24,11 +26,13 @@ export function YearRangePicker({ className }: Props) {
     const setSinceYear = useGlobalStore((state) => state.setSinceYear);
     const setUntilYear = useGlobalStore((state) => state.setUntilYear);
 
-    // Generate year options - from 2022 to current year + 2
+    // Generate year options - use provided min/max or fallback to default range
     const currentYear = new Date().getFullYear();
+    const startYear = minYear || 2022;
+    const endYear = maxYear || currentYear + 2;
     const years = Array.from(
-        { length: currentYear - 2021 + 2 },
-        (_, i) => 2022 + i
+        { length: endYear - startYear + 1 },
+        (_, i) => startYear + i
     );
 
     const handleFromYearChange = (year: string) => {
