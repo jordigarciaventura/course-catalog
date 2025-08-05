@@ -17,7 +17,7 @@ const lang = getLangFromUrl(Astro.url);
         <MainHead title={title} description={description} />
         <ThemeScript />
     </head>
-    <body>
+    <body class="overscroll-y-none">
         <slot />
     </body>
 </html>
