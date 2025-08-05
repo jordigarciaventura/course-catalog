@@ -15,7 +15,9 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslation(lang);
 ---
 
-<div class="relative flex w-full flex-col items-center py-10 min-h-[400px]">
+<div
+    class="relative flex w-full flex-col items-center py-10 min-h-[400px] mt-16"
+>
     <!-- Background pattern for glassmorphism effect -->
     <div class="absolute inset-0 opacity-30 dark:opacity-20">
         <div
@@ -36,35 +38,35 @@ const t = useTranslation(lang);
         </div>
     </div>
 
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center max-w-3xl">
         <h1
-            class="text-4xl font-bold mb-4 bg-gradient-to-r dark:from-amber-500 dark:to-pink-500 bg-clip-text text-transparent from-yellow-300 to-orange-500 text-center text-balance"
+            class="text-2xl sm:text-4xl font-bold mb-4 bg-gradient-to-r dark:from-amber-500 dark:to-pink-500 bg-clip-text text-transparent from-yellow-300 to-orange-500 text-center text-balance"
         >
             {t("index.title")}
         </h1>
         <p
-            class="text-white/90 dark:text-slate-200/90 text-lg mb-8 text-center text-balance"
+            class="text-white/90 dark:text-slate-200/90 text-md sm:text-lg mb-8 text-center text-balance"
         >
             {t("index.subtitle")}
         </p>
     </div>
 
     <!-- Stats Cards -->
-    <div class="relative z-10 flex gap-8 mt-8 h-48 w-lg">
+    <div class="relative z-10 flex gap-4 sm:gap-8 mt-8 w-full max-w-xl px-4">
         <StatsCard
             value={totalCourses.toString()}
             label={t("index.coursesCompleted")}
         >
-            <CheckCircle class="size-8" slot="icon" />
+            <CheckCircle class="size-5 sm:size-8" slot="icon" />
         </StatsCard>
         <StatsCard value={`${totalHours}h`} label={t("index.totalHours")}>
-            <Clock class="size-8" slot="icon" />
+            <Clock class="size-5 sm:size-8" slot="icon" />
         </StatsCard>
         <StatsCard
             value={firstYear.toString()}
             label={t("index.learningSince")}
         >
-            <Calendar class="size-8" slot="icon" />
+            <Calendar class="size-5 sm:size-8" slot="icon" />
         </StatsCard>
     </div>
 </div>
