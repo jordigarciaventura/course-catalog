@@ -69,13 +69,13 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
                     </div>
                 </div>
 
-                <CardTitle className="text-lg font-semibold leading-tight mt-5">
+                <CardTitle className="text-lg font-semibold leading-tight mt-6 text-balance">
                     {title}
                 </CardTitle>
             </CardHeader>
 
             <CardContent className="p-0 flex-1 pb-8">
-                <CardDescription className="text-sm text-muted-foreground">
+                <CardDescription className="text-sm text-muted-foreground text-balanced">
                     {description}
                 </CardDescription>
             </CardContent>
