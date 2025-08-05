@@ -30,9 +30,9 @@ export function CourseGrid({ allCourses }: Props) {
     useEffect(() => setCourses(allCourses), []);
 
     return (
-        <>
+        <div className="sticky top-0 left-0 mt-[550px]">
             {/* Sticky CourseFilterSection - positioned relative to page scroll */}
-            <div className="sticky top-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border w-full mt-[550px] text-black dark:text-white">
+            <div className="sticky top-0 left-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border w-full text-black dark:text-white">
                 <div className="flex flex-col gap-6 max-w-4xl w-full mx-auto p-6">
                     <CourseFilterPanel />
                     <div className="flex items-center justify-between h-9">
@@ -57,7 +57,7 @@ export function CourseGrid({ allCourses }: Props) {
             </div>
 
             {/* Course Grid Content */}
-            <div className="bg-background border border-border shadow-2xl relative z-10 w-full min-h-screen mx-auto pt-8 pb-32">
+            <div className="relative bg-background z-10 w-full min-h-screen mx-auto pt-8 pb-48">
                 <div className="w-full p-6 flex justify-center items-center flex-col">
                     {filteredAndSortedCourses.length === 0 ? (
                         <div className="text-center py-12">
@@ -105,6 +105,6 @@ export function CourseGrid({ allCourses }: Props) {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }

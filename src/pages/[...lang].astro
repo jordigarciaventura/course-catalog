@@ -54,7 +54,7 @@ export async function getStaticPaths() {
         <!-- Fixed/Sticky Header Section -->
 
         <div
-            class="fixed top-0 left-0 right-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full h-screen p-4 shadow-lg backdrop-blur-sm"
+            class="fixed top-0 left-0 right-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full h-[650px] p-4 shadow-lg backdrop-blur-sm -z-10"
         >
             <div class="flex justify-end gap-6 items-center">
                 <Toggle style="width: 20px; height: 20px; color:white" />
@@ -66,9 +66,6 @@ export async function getStaticPaths() {
                 totalHours={courseStats.totalHours}
                 firstYear={courseStats.firstYear}
             />
-        </div>
-
-        <div class="fixed top-[80vh] h-screen w-full bg-white dark:bg-black">
         </div>
 
         <!-- Course Grid with top margin to account for fixed header -->
