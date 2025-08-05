@@ -3,14 +3,14 @@ import type { MultilingualText } from "@/types";
 export const ui = {
     index: {
         title: {
-            en: "Courses",
-            es: "Cursos",
-            ca: "Cursos",
+            en: "My Learning Journey",
+            es: "Mi viaje de aprendizaje",
+            ca: "El meu viatge d'aprenentatge",
         } as MultilingualText,
         subtitle: {
-            en: "Explore our course catalog",
-            es: "Explora nuestro catálogo de cursos",
-            ca: "Explora el nostre catàleg de cursos",
+            en: "Exploring the frontiers of technology through continuous learning and growth",
+            es: "Explorando las fronteras de la tecnología a través del aprendizaje y el crecimiento continuos",
+            ca: "Explorant les fronteres de la tecnologia a través de l'aprenentatge i el creixement continus",
         } as MultilingualText,
         allCategories: {
             en: "All categories",
@@ -82,20 +82,20 @@ export const ui = {
                 count === 1 && total === 1
                     ? "1 course shown"
                     : total === count
-                    ? `${count} courses shown`
-                    : `${count} of ${total} courses shown`,
+                      ? `${count} courses shown`
+                      : `${count} of ${total} courses shown`,
             es: (count: number, total: number) =>
                 count === 1 && total === 1
                     ? "1 curso mostrado"
                     : total === count
-                    ? `${count} cursos mostrados`
-                    : `${count} de ${total} cursos mostrados`,
+                      ? `${count} cursos mostrados`
+                      : `${count} de ${total} cursos mostrados`,
             ca: (count: number, total: number) =>
                 count === 1 && total === 1
                     ? "1 curs mostrat"
                     : total === count
-                    ? `${count} cursos mostrats`
-                    : `${count} de ${total} cursos mostrats`,
+                      ? `${count} cursos mostrats`
+                      : `${count} de ${total} cursos mostrats`,
         },
         clearFilters: {
             en: "Clear filters",

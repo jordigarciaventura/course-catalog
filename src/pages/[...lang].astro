@@ -7,7 +7,7 @@ import type { Language } from "@/types";
 import { Toggle } from "astro-theme-toggle";
 import { getAllCourses } from "@/lib/courseLoader";
 import { getCurrentLanguageFromPath } from "@/lib/language";
-import { languages } from "@/config";
+import { creator, languages } from "@/config";
 import { useGlobalStore } from "@/state";
 import Hero from "@/components/Hero.astro";
 import { getHeroStats } from "@/lib/courseStats";
@@ -56,9 +56,12 @@ export async function getStaticPaths() {
         <div
             class="fixed top-0 left-0 right-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full h-[650px] p-4 shadow-lg backdrop-blur-sm -z-10"
         >
-            <div class="flex justify-end gap-6 items-center">
-                <Toggle style="width: 20px; height: 20px; color:white" />
-                <LanguageSelect client:load />
+            <div class="flex justify-between items-center w-full">
+                <p class="ml-8">{creator}</p>
+                <div class="flex items-center gap-6">
+                    <Toggle style="width: 20px; height: 20px; color:white" />
+                    <LanguageSelect client:load />
+                </div>
             </div>
 
             <Hero

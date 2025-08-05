@@ -23,3 +23,5 @@ export const languages = ["en", "es", "ca"] as const;
  * Default language setting
  */
 export const defaultLanguage = "en" as const;
+
+export const creator = "Jordi García Ventura" as const;
