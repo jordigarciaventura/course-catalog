@@ -94,10 +94,7 @@ export function CourseGrid({ allCourses }: Props) {
                                         key={course.id}
                                         className={gridClasses}
                                     >
-                                        <CourseCard
-                                            course={course}
-                                            className="h-full"
-                                        />
+                                        <CourseCard course={course} />
                                     </div>
                                 );
                             })}

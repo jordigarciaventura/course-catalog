@@ -10,6 +10,7 @@ import type { Course } from "@/types";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { cn } from "@/lib/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
+import { format, parse } from "date-fns";
 
 interface Props {
     course: Course;
@@ -25,46 +26,53 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
     const date = course.date;
     const category = course.category;
 
+    // Parse the date from DD/MM/YYYY format and format to "MMM yyyy"
+    const parsedDate = parse(date, "dd/MM/yyyy", new Date());
+    const formattedDate = format(parsedDate, "MMM yyyy");
+
     return (
         <Card
             className={cn(
-                "w-full rounded-xl shadow-md p-4 flex flex-col",
+                "w-full rounded-xl shadow-md p-4 flex flex-col h-full gap-4",
                 className
             )}
         >
-            <CardHeader className="p-0">
-                <CategoryBadge courseCategory={category} />
-
-                <div className="flex gap-4 items-center pt-4 pb-2">
-                    <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-3 size-16 flex items-center justify-center flex-shrink-0">
-                        <span
-                            className="flex size-12 [&>svg]:w-full [&>svg]:h-full text-2xl items-center justify-center"
-                            aria-hidden="true"
-                        >
-                            <img
-                                src={course.iconUrl}
-                                className="w-full h-full"
-                            />
-                        </span>
-                    </div>
-                    <CardTitle className="text-lg font-semibold leading-tight">
-                        {title}
-                    </CardTitle>
-                </div>
-
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <time className="flex items-center" dateTime={date}>
-                        <CalendarIcon
-                            className="size-4 mr-2"
-                            aria-hidden="true"
+            <CardHeader className="p-0 relative">
+                <div className="absolute top-4 size-19 left-0 rounded-full bg-gray-100 dark:bg-gray-800 border p-3 flex items-center justify-center flex-shrink-0">
+                    <span
+                        className="flex w-full h-full [&>svg]:w-full [&>svg]:h-full text-2xl items-center justify-center"
+                        aria-hidden="true"
+                    >
+                        <img
+                            src={course.iconUrl}
+                            className="w-full h-full dark:[filter:drop-shadow(0_0_1px_white)_drop-shadow(0_0_1px_white)]"
                         />
-                        <span>{date}</span>
-                    </time>
-                    <div className="flex items-center">
-                        <Clock className="size-4 mr-2" aria-hidden="true" />
-                        <span>{duration}h</span>
+                    </span>
+                </div>
+
+                <div className="flex flex-col items-end gap-3 text-sm text-muted-foreground">
+                    <CategoryBadge courseCategory={category} />
+                    <div className="pr-2 flex items-end flex-col gap-2">
+                        <time
+                            className="flex items-center gap-2"
+                            dateTime={date}
+                        >
+                            <span>{formattedDate}</span>
+                            <CalendarIcon
+                                className="size-4"
+                                aria-hidden="true"
+                            />
+                        </time>
+                        <div className="flex items-center gap-2">
+                            <span>{duration}h</span>
+                            <Clock className="size-4" aria-hidden="true" />
+                        </div>
                     </div>
                 </div>
+
+                <CardTitle className="text-lg font-semibold leading-tight mt-4">
+                    {title}
+                </CardTitle>
             </CardHeader>
 
             <CardContent className="p-0 flex-1">
