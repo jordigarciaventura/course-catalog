@@ -20,7 +20,7 @@ export function CourseGrid() {
                         </p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-max max-w-4xl">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-max max-w-4xl">
                         {filteredAndSortedCourses.map((course) => {
                             const title = course.title[currentLanguage];
                             const description =
