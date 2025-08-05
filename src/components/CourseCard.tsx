@@ -10,7 +10,7 @@ import type { Course } from "@/types";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { cn } from "@/lib/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
-import { format, parse } from "date-fns";
+import { formatCourseDate } from "@/lib/date";
 
 interface Props {
     course: Course;
@@ -26,9 +26,8 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
     const date = course.date;
     const category = course.category;
 
-    // Parse the date from DD/MM/YYYY format and format to "MMM yyyy"
-    const parsedDate = parse(date, "dd/MM/yyyy", new Date());
-    const formattedDate = format(parsedDate, "MMM yyyy");
+    // Format the date using the localized date utility
+    const formattedDate = formatCourseDate(date, currentLanguage);
 
     return (
         <Card
