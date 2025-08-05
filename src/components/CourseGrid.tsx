@@ -30,7 +30,7 @@ export function CourseGrid({ allCourses }: Props) {
     useEffect(() => setCourses(allCourses), []);
 
     return (
-        <div className="sticky top-0 left-0 mt-[550px]">
+        <div className="sticky top-0 left-0 z-20">
             {/* Sticky CourseFilterSection - positioned relative to page scroll */}
             <div className="sticky top-0 left-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border w-full text-black dark:text-white shadow-[0_4px_12px_-4px_rgba(0,0,0,0.12)]">
                 <div className="flex flex-col gap-6 max-w-4xl w-full mx-auto p-6">

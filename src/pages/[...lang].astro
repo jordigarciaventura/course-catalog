@@ -54,10 +54,11 @@ export async function getStaticPaths() {
         <!-- Fixed/Sticky Header Section -->
 
         <div
-            class="fixed top-0 left-0 right-0 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full h-[650px] p-4 shadow-lg backdrop-blur-sm -z-10"
+            id="header"
+            class="fixed top-0 left-0 right-0 z-10 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4"
         >
             <div class="flex justify-between items-center w-full">
-                <p class="ml-8 text-sm sm:text-base">{creator}</p>
+                <p class="ml-8 text-sm sm:text-base text-white">{creator}</p>
                 <div class="flex items-center gap-6">
                     <div class="size-5 text-white">
                         <Toggle />
@@ -72,6 +73,8 @@ export async function getStaticPaths() {
                 firstYear={courseStats.firstYear}
             />
         </div>
+
+        <div id="header-spacer"></div>
 
         <!-- Course Grid with top margin to account for fixed header -->
         <CourseGrid allCourses={courses} client:load />
@@ -100,3 +103,35 @@ export async function getStaticPaths() {
         </div>
     </>
 </BaseLayout>
+
+<script>
+    function synchronizeHeaderSpacer() {
+        const header = document.getElementById("header");
+        const headerSpacer = document.getElementById("header-spacer");
+
+        if (header && headerSpacer) {
+            const headerHeight = header.offsetHeight;
+            headerSpacer.style.height = `${headerHeight}px`;
+        }
+    }
+
+    // Set initial height
+    document.addEventListener("DOMContentLoaded", synchronizeHeaderSpacer);
+
+    // Update on window resize
+    window.addEventListener("resize", synchronizeHeaderSpacer);
+
+    // Update on theme toggle (in case it affects layout)
+    document.addEventListener("astro:after-swap", synchronizeHeaderSpacer);
+
+    // Use ResizeObserver for better responsiveness to content changes
+    if (typeof ResizeObserver !== "undefined") {
+        const header = document.getElementById("header");
+        if (header) {
+            const resizeObserver = new ResizeObserver(() => {
+                synchronizeHeaderSpacer();
+            });
+            resizeObserver.observe(header);
+        }
+    }
+</script>
