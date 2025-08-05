@@ -122,11 +122,16 @@ export function navigateToLanguage(language: Language): void {
         }
     }
 
+    // Preserve query parameters and hash
+    const queryParams = window.location.search;
+    const hash = window.location.hash;
+    const fullUrl = newPath + queryParams + hash;
+
     // Set cookie before navigation
     setLanguageCookie(language);
 
-    // Navigate to new path
-    window.location.href = newPath;
+    // Navigate to new path with preserved query parameters and hash
+    window.location.href = fullUrl;
 }
 
 /**
