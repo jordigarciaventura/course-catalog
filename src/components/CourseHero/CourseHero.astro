@@ -15,7 +15,7 @@ const { courseStats } = Astro.props;
 
 <div
     id="header"
-    class="fixed top-0 left-0 right-0 z-10 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4"
+    class="fixed top-0 left-0 right-0 z-10 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4 pb-[200px]"
 >
     <TopBar />
     <Hero
@@ -28,14 +28,15 @@ const { courseStats } = Astro.props;
 <div id="header-spacer"></div>
 
 <script>
-    // Keep the header spacer height in sync with the header height
+    // Keep the header spacer height in sync with the header height (minus some padding to hide the background)
 
     function synchronizeHeaderSpacer() {
         const header = document.getElementById("header");
         const headerSpacer = document.getElementById("header-spacer");
+        const padding = 150;
 
         if (header && headerSpacer) {
-            const headerHeight = header.offsetHeight;
+            const headerHeight = header.offsetHeight - padding;
             headerSpacer.style.height = `${headerHeight}px`;
         }
     }
