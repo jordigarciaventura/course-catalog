@@ -37,7 +37,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
             )}
         >
             <CardHeader className="p-0 relative">
-                <div className="absolute top-4 size-19 left-0 rounded-full bg-gray-100 dark:bg-gray-800 border p-3 flex items-center justify-center flex-shrink-0">
+                <div className="absolute top-8 size-19 left-0 rounded-full bg-gray-100 dark:bg-gray-800 border p-3 flex items-center justify-center flex-shrink-0">
                     <span
                         className="flex w-full h-full [&>svg]:w-full [&>svg]:h-full text-2xl items-center justify-center"
                         aria-hidden="true"
@@ -69,7 +69,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
                     </div>
                 </div>
 
-                <CardTitle className="text-lg font-semibold leading-tight mt-4">
+                <CardTitle className="text-lg font-semibold leading-tight mt-5">
                     {title}
                 </CardTitle>
             </CardHeader>
