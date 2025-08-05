@@ -1,8 +1,8 @@
-import { PagefindSearch } from "./PagefindSearch";
-import { CategorySelect } from "./CategorySelect";
-import { SortToggle } from "./SortToggle";
-import { YearRangePicker } from "./YearRangePicker";
-import { YearFilterToggle } from "./YearFilterToggle";
+import { PagefindSearch } from "@/components/CourseCatalog/CourseFilterPanel/PagefindSearch";
+import { CategorySelect } from "@/components/CourseCatalog/CourseFilterPanel/CategorySelect";
+import { SortToggle } from "@/components/CourseCatalog/CourseFilterPanel/SortToggle";
+import { YearRangePicker } from "@/components/CourseCatalog/CourseFilterPanel/YearRangePicker";
+import { YearFilterToggle } from "@/components/CourseCatalog/CourseFilterPanel/YearFilterToggle";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/state";
 import { getYearRange } from "@/lib/courseStats";
@@ -11,11 +11,10 @@ interface Props {
     className?: string;
 }
 
-export function CourseFilterPanel({ className }: Props) {
+export function CourseFilters({ className }: Props) {
     const filterByYear = useGlobalStore((state) => state.filterByYear);
     const allCourses = useGlobalStore((state) => state.allCourses);
 
-    // Calculate min and max years from all courses using the utility function
     const { minYear, maxYear } = getYearRange(allCourses);
 
     return (

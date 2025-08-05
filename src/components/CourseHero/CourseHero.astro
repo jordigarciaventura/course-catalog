@@ -1,0 +1,58 @@
+---
+import TopBar from "@/components/CourseHero/TopBar.astro";
+import Hero from "@/components/CourseHero/Hero.astro";
+
+interface Props {
+    courseStats: {
+        totalCourses: number;
+        totalHours: number;
+        firstYear: number;
+    };
+}
+
+const { courseStats } = Astro.props;
+---
+
+<div
+    id="header"
+    class="fixed top-0 left-0 right-0 z-10 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4"
+>
+    <TopBar />
+    <Hero
+        totalCourses={courseStats.totalCourses}
+        totalHours={courseStats.totalHours}
+        firstYear={courseStats.firstYear}
+    />
+</div>
+
+<div id="header-spacer"></div>
+
+<script>
+    // Keep the header spacer height in sync with the header height
+
+    function synchronizeHeaderSpacer() {
+        const header = document.getElementById("header");
+        const headerSpacer = document.getElementById("header-spacer");
+
+        if (header && headerSpacer) {
+            const headerHeight = header.offsetHeight;
+            headerSpacer.style.height = `${headerHeight}px`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", synchronizeHeaderSpacer);
+
+    window.addEventListener("resize", synchronizeHeaderSpacer);
+
+    document.addEventListener("astro:after-swap", synchronizeHeaderSpacer);
+
+    if (typeof ResizeObserver !== "undefined") {
+        const header = document.getElementById("header");
+        if (header) {
+            const resizeObserver = new ResizeObserver(() => {
+                synchronizeHeaderSpacer();
+            });
+            resizeObserver.observe(header);
+        }
+    }
+</script>

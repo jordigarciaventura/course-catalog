@@ -1,15 +1,12 @@
 ---
-import { LanguageSelect } from "@/components/LanguageSelect";
-import { CourseGrid } from "@/components/CourseGrid";
+import { CourseCatalog } from "@/components/CourseCatalog/CourseCatalog";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { useTranslation } from "@/i18n/utils";
 import type { Language } from "@/types";
-import { Toggle } from "astro-theme-toggle";
 import { getAllCourses } from "@/lib/courseLoader";
 import { getCurrentLanguageFromPath } from "@/lib/language";
-import { creator, languages } from "@/config";
-import { useGlobalStore } from "@/state";
-import Hero from "@/components/Hero.astro";
+import { languages } from "@/config";
+import CourseHero from "@/components/CourseHero/CourseHero.astro";
 import { getHeroStats } from "@/lib/courseStats";
 
 // Get the language from the URL parameter (or undefined for default route)
@@ -50,88 +47,27 @@ export async function getStaticPaths() {
 ---
 
 <BaseLayout>
-    <>
-        <!-- Fixed/Sticky Header Section -->
+    <CourseHero courseStats={courseStats} />
+    <CourseCatalog allCourses={courses} client:load />
 
-        <div
-            id="header"
-            class="fixed top-0 left-0 right-0 z-10 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 w-full p-4"
-        >
-            <div class="flex justify-between items-center w-full">
-                <p class="ml-8 text-sm sm:text-base text-white">{creator}</p>
-                <div class="flex items-center gap-6">
-                    <div class="size-5 text-white">
-                        <Toggle />
-                    </div>
-                    <LanguageSelect client:load />
+    <!-- Invisible content for Pagefind indexing -->
+    <div class="hidden" data-pagefind-body>
+        {
+            courses.map((course) => (
+                <div
+                    data-pagefind-meta={`course_id:${course.id}`}
+                    data-pagefind-meta={`category:${course.category}`}
+                >
+                    <h2>{course.title[currentLanguage]}</h2>
+                    <p>{course.description[currentLanguage]}</p>
+                    <span data-pagefind-meta={`date:${course.date}`}>
+                        {course.date}
+                    </span>
+                    <span data-pagefind-meta={`duration:${course.duration}`}>
+                        {course.duration}
+                    </span>
                 </div>
-            </div>
-
-            <Hero
-                totalCourses={courseStats.totalCourses}
-                totalHours={courseStats.totalHours}
-                firstYear={courseStats.firstYear}
-            />
-        </div>
-
-        <div id="header-spacer"></div>
-
-        <!-- Course Grid with top margin to account for fixed header -->
-        <CourseGrid allCourses={courses} client:load />
-
-        <!-- Invisible content for Pagefind indexing -->
-        <div class="hidden" data-pagefind-body>
-            {
-                courses.map((course) => (
-                    <div
-                        data-pagefind-meta={`course_id:${course.id}`}
-                        data-pagefind-meta={`category:${course.category}`}
-                    >
-                        <h2>{course.title[currentLanguage]}</h2>
-                        <p>{course.description[currentLanguage]}</p>
-                        <span data-pagefind-meta={`date:${course.date}`}>
-                            {course.date}
-                        </span>
-                        <span
-                            data-pagefind-meta={`duration:${course.duration}`}
-                        >
-                            {course.duration}
-                        </span>
-                    </div>
-                ))
-            }
-        </div>
-    </>
+            ))
+        }
+    </div>
 </BaseLayout>
-
-<script>
-    function synchronizeHeaderSpacer() {
-        const header = document.getElementById("header");
-        const headerSpacer = document.getElementById("header-spacer");
-
-        if (header && headerSpacer) {
-            const headerHeight = header.offsetHeight;
-            headerSpacer.style.height = `${headerHeight}px`;
-        }
-    }
-
-    // Set initial height
-    document.addEventListener("DOMContentLoaded", synchronizeHeaderSpacer);
-
-    // Update on window resize
-    window.addEventListener("resize", synchronizeHeaderSpacer);
-
-    // Update on theme toggle (in case it affects layout)
-    document.addEventListener("astro:after-swap", synchronizeHeaderSpacer);
-
-    // Use ResizeObserver for better responsiveness to content changes
-    if (typeof ResizeObserver !== "undefined") {
-        const header = document.getElementById("header");
-        if (header) {
-            const resizeObserver = new ResizeObserver(() => {
-                synchronizeHeaderSpacer();
-            });
-            resizeObserver.observe(header);
-        }
-    }
-</script>

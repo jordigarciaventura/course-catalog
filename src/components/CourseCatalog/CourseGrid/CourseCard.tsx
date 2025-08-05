@@ -7,7 +7,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import type { Course } from "@/types";
-import { CategoryBadge } from "@/components/CategoryBadge";
+import { CategoryBadge } from "@/components/CourseCatalog/CourseGrid/CategoryBadge";
 import { cn } from "@/lib/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { formatCourseDate } from "@/lib/date";

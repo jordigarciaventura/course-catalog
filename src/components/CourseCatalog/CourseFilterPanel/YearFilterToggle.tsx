@@ -1,5 +1,5 @@
-import { Toggle } from "./ui/toggle";
-import { Skeleton } from "./ui/skeleton";
+import { Toggle } from "@/components/ui/toggle";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar } from "lucide-react";
 import { useTranslation } from "@/i18n/utils";
 import { cn } from "@/lib/utils";
