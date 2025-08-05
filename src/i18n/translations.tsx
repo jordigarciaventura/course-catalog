@@ -77,6 +77,16 @@ export const ui = {
             es: "No se encontraron cursos",
             ca: "No s'han trobat cursos",
         } as MultilingualText,
+        noResultsMessage: {
+            en: "We couldn't find any courses matching your criteria",
+            es: "No pudimos encontrar cursos que coincidan con tus criterios",
+            ca: "No hem pogut trobar cursos que coincideixin amb els teus criteris",
+        } as MultilingualText,
+        noResultsSuggestion: {
+            en: "Try adjusting your filters or search terms",
+            es: "Intenta ajustar tus filtros o términos de búsqueda",
+            ca: "Prova d'ajustar els teus filtres o termes de cerca",
+        } as MultilingualText,
         searchResults: {
             en: (count: number, total: number) =>
                 count === 1 && total === 1

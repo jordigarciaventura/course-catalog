@@ -74,7 +74,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
                 </CardTitle>
             </CardHeader>
 
-            <CardContent className="p-0 flex-1">
+            <CardContent className="p-0 flex-1 pb-8">
                 <CardDescription className="text-sm text-muted-foreground">
                     {description}
                 </CardDescription>
