@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/state";
 import { Search, X } from "lucide-react";
 import * as React from "react";
+import { APP_BASE_PATH } from "@/../app.config.js";
 
 interface Props {
   className?: string;
@@ -110,7 +111,7 @@ export function PagefindSearch({ className }: Props) {
         try {
           // Try to load Pagefind dynamically
           const script = document.createElement("script");
-          script.src = "/pagefind/pagefind.js";
+          script.src = `${APP_BASE_PATH}/pagefind/pagefind.js`;
           script.onload = async () => {
             if ((window as any).pagefind) {
               (window as any).pagefind = await (window as any).pagefind.init();
