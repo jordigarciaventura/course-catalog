@@ -158,6 +158,28 @@ export const ui = {
             ca: "Aprenent\nDes De",
         } as MultilingualText,
     },
+    head: {
+        title: {
+            en: "My Learning Journey | Course Catalog",
+            es: "Mi Viaje de Aprendizaje | Catálogo de Cursos",
+            ca: "El Meu Viatge d'Aprenentatge | Catàleg de Cursos",
+        } as MultilingualText,
+        description: {
+            en: "Explore my continuous learning journey through technology. A comprehensive catalog of courses completed across web development, mobile development, AI/ML, databases, and more.",
+            es: "Explora mi viaje continuo de aprendizaje a través de la tecnología. Un catálogo completo de cursos completados en desarrollo web, desarrollo móvil, IA/ML, bases de datos y más.",
+            ca: "Explora el meu viatge continu d'aprenentatge a través de la tecnologia. Un catàleg complet de cursos completats en desenvolupament web, desenvolupament mòbil, IA/ML, bases de dades i molt més.",
+        } as MultilingualText,
+        notFoundTitle: {
+            en: "Page Not Found",
+            es: "Página No Encontrada",
+            ca: "Pàgina No Trobada",
+        } as MultilingualText,
+        notFoundDescription: {
+            en: "404 Error — The page you're looking for doesn't exist",
+            es: "Error 404 — La página que buscas no existe",
+            ca: "Error 404 — La pàgina que cerques no existeix",
+        } as MultilingualText,
+    },
     common: {
         loading: {
             en: "Loading...",

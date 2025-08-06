@@ -1,8 +1,12 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getLangFromUrl, useTranslation } from "@/i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslation(lang);
 ---
 
 <BaseLayout
-    title="Not Found"
-    description="404 Error — this page was not found"
+    title={t("head.notFoundTitle")}
+    description={t("head.notFoundDescription")}
 />

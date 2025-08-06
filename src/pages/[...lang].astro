@@ -31,6 +31,10 @@ const courseStats = getHeroStats(courses);
 // Get translations for current language
 const t = useTranslation(currentLanguage);
 
+// Get translated page metadata
+const pageTitle = t("head.title");
+const pageDescription = t("head.description");
+
 // Generate static paths for all supported languages
 export async function getStaticPaths() {
     return [
@@ -46,7 +50,7 @@ export async function getStaticPaths() {
 }
 ---
 
-<BaseLayout>
+<BaseLayout title={pageTitle} description={pageDescription}>
     <CourseHero courseStats={courseStats} />
     <CourseCatalog allCourses={courses} client:load />
 
