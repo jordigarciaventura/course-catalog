@@ -11,6 +11,7 @@ import { CategoryBadge } from "@/components/CourseCatalog/CourseGrid/CategoryBad
 import { cn } from "@/lib/utils";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
 import { formatCourseDate } from "@/lib/date";
+import { asset } from "@/config";
 
 interface Props {
     course: Course;
@@ -43,7 +44,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
                         aria-hidden="true"
                     >
                         <img
-                            src={course.iconUrl}
+                            src={asset(course.iconUrl)}
                             className="w-full h-full dark:[filter:drop-shadow(0_0_1px_white)_drop-shadow(0_0_1px_white)]"
                         />
                     </span>

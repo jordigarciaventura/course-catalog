@@ -4,11 +4,17 @@ import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import svgr from "vite-plugin-svgr";
 import pagefind from "astro-pagefind";
+import { APP_BASE_PATH, APP_SITE_URL } from "./app.config.js";
 
 import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
+  site: APP_SITE_URL,
+  // Choose deployment configuration:
+  // For root deployment: use base: "/"
+  // For subdirectory deployment: use base: APP_BASE_PATH
+  base: APP_BASE_PATH || "/",
   vite: {
     plugins: [
       tailwindcss(),

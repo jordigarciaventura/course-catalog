@@ -1,4 +1,4 @@
-import { defaultLanguage, languages } from "@/config";
+import { defaultLanguage, languages, basePath } from "@/config";
 import { ui } from "./translations";
 import type { Language } from "@/types";
 
@@ -55,7 +55,19 @@ export function useTranslation(language: Language) {
 export type { TranslationKey };
 
 export function getLangFromUrl(url: URL) {
-    const [, lang] = url.pathname.split("/");
+    let pathname = url.pathname;
+
+    // Remove the configured base path if present
+    if (basePath && pathname.startsWith(basePath)) {
+        pathname = pathname.slice(basePath.length);
+    }
+
+    // Ensure path starts with /
+    if (!pathname.startsWith("/")) {
+        pathname = "/" + pathname;
+    }
+
+    const [, lang] = pathname.split("/");
     if (languages.includes(lang as Language)) return lang as Language;
     return defaultLanguage;
 }

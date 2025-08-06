@@ -1,8 +1,23 @@
 /**
  * Language utilities for URL path-based language management
+ *
+ * This module provides utilities for handling internationalization in an Astro application
+ * that can work with or without a configurable base path.
+ *
+ * Supported URL patterns:
+ * - With base path: {basePath}/en/..., {basePath}/es/..., {basePath}/ca/...
+ * - Without base path: /en/..., /es/..., /ca/...
+ * - Default language (en) has no language prefix
+ *
+ * The base path is configured in app.config.js and can be easily changed for different deployments.
+ *
+ * Available functions:
+ * - getCurrentLanguageFromPath(pathname?): Get language from URL path
+ * - navigateToLanguage(language): Navigate to different language version of current page
+ * - setLanguageCookie(language): Store language preference in cookies
  */
 
-import { languages, defaultLanguage } from "@/config";
+import { languages, defaultLanguage, basePath } from "@/config";
 import type { Language } from "@/types";
 
 /**
@@ -11,9 +26,42 @@ import type { Language } from "@/types";
 const LANGUAGE_COOKIE = "preferred-language";
 
 /**
+ * Get the base path from the current environment
+ * This function detects the base path by looking at the current URL structure
+ * and checking for the configured base path
+ */
+function getBasePath(): string {
+    if (typeof window === "undefined") {
+        // Server-side: try to get from import.meta.env if available
+        try {
+            // This will work in Astro SSR context
+            const envBase = (import.meta.env?.BASE_URL || "").replace(
+                /\/$/,
+                ""
+            );
+            // Don't return "/" as a base path - that's the root, not a subdirectory
+            return envBase === "/" ? "" : envBase;
+        } catch {
+            return "";
+        }
+    }
+
+    const pathname = window.location.pathname;
+
+    // Check if the path starts with the configured base path
+    // Only consider non-root paths as base paths
+    if (basePath && basePath !== "/" && pathname.startsWith(basePath)) {
+        return basePath;
+    }
+
+    return "";
+}
+
+/**
  * Get current language from URL path
- * Path format: /en/... or /es/... or /ca/...
- * Default language (en) has no prefix: /...
+ * Path format with base: {basePath}/en/... or {basePath}/es/... or {basePath}/ca/...
+ * Path format without base: /en/... or /es/... or /ca/...
+ * Default language (en) has no prefix: {basePath}/... or /...
  */
 export function getCurrentLanguageFromPath(pathname?: string): Language {
     let currentPath: string;
@@ -29,6 +77,17 @@ export function getCurrentLanguageFromPath(pathname?: string): Language {
         return defaultLanguage;
     }
 
+    // Remove base path if present
+    const basePath = getBasePath();
+    if (basePath && currentPath.startsWith(basePath)) {
+        currentPath = currentPath.slice(basePath.length);
+    }
+
+    // Ensure path starts with /
+    if (!currentPath.startsWith("/")) {
+        currentPath = "/" + currentPath;
+    }
+
     const pathSegments = currentPath.split("/").filter(Boolean);
 
     // Check if first segment is a language code
@@ -41,23 +100,6 @@ export function getCurrentLanguageFromPath(pathname?: string): Language {
 }
 
 /**
- * Get language from cookies
- */
-export function getLanguageFromCookie(): Language | null {
-    if (typeof document === "undefined") return null;
-
-    const cookies = document.cookie.split(";");
-    for (const cookie of cookies) {
-        const [name, value] = cookie.trim().split("=");
-        if (name === LANGUAGE_COOKIE) {
-            const lang = decodeURIComponent(value) as Language;
-            return languages.includes(lang) ? lang : null;
-        }
-    }
-    return null;
-}
-
-/**
  * Set language in cookies
  */
 export function setLanguageCookie(language: Language): void {
@@ -66,28 +108,13 @@ export function setLanguageCookie(language: Language): void {
     const expires = new Date();
     expires.setFullYear(expires.getFullYear() + 1); // 1 year expiry
 
+    // Use the base path for cookie path to ensure it works across the entire app
+    const detectedBasePath = getBasePath();
+    const cookiePath = detectedBasePath || "/";
+
     document.cookie = `${LANGUAGE_COOKIE}=${encodeURIComponent(
         language
-    )}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
-}
-
-/**
- * Build URL path for a given language
- * Default language: /path
- * Other languages: /lang/path
- */
-export function buildLanguagePath(
-    language: Language,
-    path: string = ""
-): string {
-    // Remove leading slash from path
-    const cleanPath = path.startsWith("/") ? path.slice(1) : path;
-
-    if (language === defaultLanguage) {
-        return `/${cleanPath}`;
-    } else {
-        return `/${language}/${cleanPath}`;
-    }
+    )}; expires=${expires.toUTCString()}; path=${cookiePath}; SameSite=Lax`;
 }
 
 /**
@@ -98,8 +125,23 @@ export function navigateToLanguage(language: Language): void {
 
     const currentPath = window.location.pathname;
     const currentLanguage = getCurrentLanguageFromPath();
+    const detectedBasePath = getBasePath();
 
     let newPath: string;
+
+    // Remove base path from current path for processing
+    let workingPath = currentPath;
+    if (detectedBasePath && workingPath.startsWith(detectedBasePath)) {
+        workingPath = workingPath.slice(detectedBasePath.length);
+    }
+
+    // Ensure working path starts with / (handle empty root path)
+    if (!workingPath.startsWith("/")) {
+        workingPath = "/" + workingPath;
+    }
+
+    // Handle the case where workingPath is just "/" (root page)
+    const isRootPage = workingPath === "/" || workingPath === "";
 
     if (currentLanguage === defaultLanguage) {
         // Currently on default language path
@@ -107,19 +149,32 @@ export function navigateToLanguage(language: Language): void {
             return; // No change needed
         } else {
             // Add language prefix
-            newPath = `/${language}${currentPath}`;
+            if (isRootPage) {
+                newPath = `/${language}`;
+            } else {
+                newPath = `/${language}${workingPath}`;
+            }
         }
     } else {
         // Currently on non-default language path
-        const pathWithoutLang = currentPath.replace(`/${currentLanguage}`, "");
+        const pathWithoutLang = workingPath.replace(`/${currentLanguage}`, "");
 
         if (language === defaultLanguage) {
             // Remove language prefix
             newPath = pathWithoutLang || "/";
         } else {
             // Replace language prefix
-            newPath = `/${language}${pathWithoutLang}`;
+            if (pathWithoutLang === "" || pathWithoutLang === "/") {
+                newPath = `/${language}`;
+            } else {
+                newPath = `/${language}${pathWithoutLang}`;
+            }
         }
+    }
+
+    // Add base path back if it exists
+    if (detectedBasePath) {
+        newPath = detectedBasePath + newPath;
     }
 
     // Preserve query parameters and hash
@@ -132,29 +187,4 @@ export function navigateToLanguage(language: Language): void {
 
     // Navigate to new path with preserved query parameters and hash
     window.location.href = fullUrl;
-}
-
-/**
- * Get the current language with fallback priority:
- * 1. URL path language
- * 2. Cookie language
- * 3. Default language
- */
-export function getCurrentLanguage(): Language {
-    const pathLanguage = getCurrentLanguageFromPath();
-
-    // If URL has a language, use it
-    if (pathLanguage !== defaultLanguage) {
-        return pathLanguage;
-    }
-
-    // Check cookie for preference
-    const cookieLanguage = getLanguageFromCookie();
-    if (cookieLanguage && cookieLanguage !== defaultLanguage) {
-        // If cookie has non-default language, redirect to that path
-        navigateToLanguage(cookieLanguage);
-        return cookieLanguage;
-    }
-
-    return defaultLanguage;
 }
