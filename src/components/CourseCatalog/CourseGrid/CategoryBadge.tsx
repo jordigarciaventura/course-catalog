@@ -39,7 +39,6 @@ export function CategoryBadge({ courseCategory }: Props) {
                 colorClasses,
                 "inline-flex items-center text-xs font-medium px-3 py-1 rounded-full border w-fit"
             )}
-            role="badge"
             aria-label={`${t("common.category")}: ${label}`}
         >
             {icon && (

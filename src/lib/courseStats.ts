@@ -6,7 +6,7 @@ import type { Course } from "@/types";
 export function getHeroStats(courses: Course[]) {
     // Extract years from course dates
     const years = courses.map((course) => {
-        const [day, month, year] = course.date.split("/");
+        const [, , year] = course.date.split("/");
         return parseInt(year);
     });
 
@@ -35,7 +35,7 @@ export function getYearRange(courses: Course[]) {
 
     // Extract years from course dates
     const years = courses.map((course) => {
-        const [day, month, year] = course.date.split("/");
+        const [, , year] = course.date.split("/");
         return parseInt(year);
     });
 

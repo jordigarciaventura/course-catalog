@@ -11,7 +11,7 @@ interface Props {
 export function CourseCatalog({ allCourses }: Props) {
     const setCourses = useGlobalStore((state) => state.setAllCourses);
 
-    useEffect(() => setCourses(allCourses), []);
+    useEffect(() => setCourses(allCourses), [setCourses, allCourses]);
 
     return (
         <div className="sticky top-0 left-0 z-20">

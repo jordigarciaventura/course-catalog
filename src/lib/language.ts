@@ -50,7 +50,11 @@ function getBasePath(): string {
 
     // Check if the path starts with the configured base path
     // Only consider non-root paths as base paths
-    if (basePath && basePath !== "/" && pathname.startsWith(basePath)) {
+    if (
+        basePath &&
+        (basePath as string) !== "/" &&
+        pathname.startsWith(basePath)
+    ) {
         return basePath;
     }
 

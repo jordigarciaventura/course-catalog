@@ -102,7 +102,7 @@ export function PagefindSearch({ className }: Props) {
         };
 
         performSearch();
-    }, [debouncedQuery, currentLanguage, courses]);
+    }, [debouncedQuery, currentLanguage, courses, setSearchResults]);
 
     // Load Pagefind when component mounts
     React.useEffect(() => {

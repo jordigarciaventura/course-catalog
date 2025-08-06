@@ -17,7 +17,7 @@ const URL_STATE_DEFAULTS = {
 };
 
 const queryStorage: StateStorage = {
-    getItem: (key): string => {
+    getItem: (): string => {
         const searchParams = new URLSearchParams(location.search);
 
         // If no query parameters, return empty state
@@ -58,7 +58,7 @@ const queryStorage: StateStorage = {
             version: 0,
         });
     },
-    setItem: (key, newValue): void => {
+    setItem: (_, newValue): void => {
         // Parse the Zustand state
         const parsedValue = JSON.parse(newValue);
 
@@ -98,7 +98,7 @@ const queryStorage: StateStorage = {
         // Update the URL without reloading the page
         history.replaceState(null, "", url.toString());
     },
-    removeItem: (key): void => {
+    removeItem: (): void => {
         const url = new URL(location.href);
         url.search = "";
         history.replaceState(null, "", url.toString());

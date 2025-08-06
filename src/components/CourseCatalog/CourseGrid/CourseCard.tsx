@@ -46,6 +46,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
                         <img
                             src={asset(course.iconUrl)}
                             className="w-full h-full dark:[filter:drop-shadow(0_0_1px_white)_drop-shadow(0_0_1px_white)]"
+                            alt=""
                         />
                     </span>
                 </div>
