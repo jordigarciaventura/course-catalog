@@ -4,9 +4,9 @@ import { Calendar, CheckCircle, Clock } from "@lucide/astro";
 import StatsCard from "./StatsCard.astro";
 
 interface Props {
-    totalCourses?: number;
-    totalHours?: number;
-    firstYear?: number;
+  totalCourses?: number;
+  totalHours?: number;
+  firstYear?: number;
 }
 
 const { totalCourses = 5, totalHours = 130, firstYear = 2020 } = Astro.props;
@@ -15,56 +15,53 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslation(lang);
 ---
 
-<div class="relative flex w-full flex-col items-center py-10 mt-16">
-    <!-- Background pattern for glassmorphism effect -->
-    <div class="absolute inset-0 opacity-30 dark:opacity-20">
-        <div
-            class="absolute top-10 left-10 w-32 h-32 bg-white dark:bg-slate-300 rounded-full blur-xl"
-        >
-        </div>
-        <div
-            class="absolute top-40 right-20 w-24 h-24 bg-yellow-200 dark:bg-blue-400 rounded-full blur-lg"
-        >
-        </div>
-        <div
-            class="absolute bottom-20 left-1/3 w-40 h-40 bg-pink-200 dark:bg-purple-400 rounded-full blur-2xl"
-        >
-        </div>
-        <div
-            class="absolute bottom-10 right-10 w-28 h-28 bg-blue-200 dark:bg-indigo-400 rounded-full blur-xl"
-        >
-        </div>
+<div class="relative mt-16 flex w-full flex-col items-center py-10">
+  <!-- Background pattern for glassmorphism effect -->
+  <div class="absolute inset-0 opacity-30 dark:opacity-20">
+    <div
+      class="absolute top-10 left-10 h-32 w-32 rounded-full bg-white blur-xl dark:bg-slate-300"
+    >
     </div>
+    <div
+      class="absolute top-40 right-20 h-24 w-24 rounded-full bg-yellow-200 blur-lg dark:bg-blue-400"
+    >
+    </div>
+    <div
+      class="absolute bottom-20 left-1/3 h-40 w-40 rounded-full bg-pink-200 blur-2xl dark:bg-purple-400"
+    >
+    </div>
+    <div
+      class="absolute right-10 bottom-10 h-28 w-28 rounded-full bg-blue-200 blur-xl dark:bg-indigo-400"
+    >
+    </div>
+  </div>
 
-    <div class="flex flex-col items-center max-w-3xl">
-        <h1
-            class="text-2xl sm:text-4xl font-bold mb-4 bg-gradient-to-r dark:from-amber-500 dark:to-pink-500 bg-clip-text text-transparent from-yellow-300 to-orange-500 text-center text-balance"
-        >
-            {t("index.title")}
-        </h1>
-        <p
-            class="text-white/90 dark:text-slate-200/90 text-md sm:text-lg mb-8 text-center text-balance"
-        >
-            {t("index.subtitle")}
-        </p>
-    </div>
+  <div class="flex max-w-3xl flex-col items-center">
+    <h1
+      class="mb-4 bg-gradient-to-r from-yellow-300 to-orange-500 bg-clip-text text-center text-2xl font-bold text-balance text-transparent sm:text-4xl dark:from-amber-500 dark:to-pink-500"
+    >
+      {t("index.title")}
+    </h1>
+    <p
+      class="text-md mb-8 text-center text-balance text-white/90 sm:text-lg dark:text-slate-200/90"
+    >
+      {t("index.subtitle")}
+    </p>
+  </div>
 
-    <!-- Stats Cards -->
-    <div class="relative z-10 flex gap-4 sm:gap-8 mt-8 w-full max-w-xl px-4">
-        <StatsCard
-            value={totalCourses.toString()}
-            label={t("index.coursesCompleted")}
-        >
-            <CheckCircle class="size-5 sm:size-8" slot="icon" />
-        </StatsCard>
-        <StatsCard value={`${totalHours}h`} label={t("index.totalHours")}>
-            <Clock class="size-5 sm:size-8" slot="icon" />
-        </StatsCard>
-        <StatsCard
-            value={firstYear.toString()}
-            label={t("index.learningSince")}
-        >
-            <Calendar class="size-5 sm:size-8" slot="icon" />
-        </StatsCard>
-    </div>
+  <!-- Stats Cards -->
+  <div class="relative z-10 mt-8 flex w-full max-w-xl gap-4 px-4 sm:gap-8">
+    <StatsCard
+      value={totalCourses.toString()}
+      label={t("index.coursesCompleted")}
+    >
+      <CheckCircle class="size-5 sm:size-8" slot="icon" />
+    </StatsCard>
+    <StatsCard value={`${totalHours}h`} label={t("index.totalHours")}>
+      <Clock class="size-5 sm:size-8" slot="icon" />
+    </StatsCard>
+    <StatsCard value={firstYear.toString()} label={t("index.learningSince")}>
+      <Calendar class="size-5 sm:size-8" slot="icon" />
+    </StatsCard>
+  </div>
 </div>

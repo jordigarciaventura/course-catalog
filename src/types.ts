@@ -15,54 +15,54 @@ export type Language = (typeof languages)[number];
  * Multilingual text content - dynamically based on supported languages
  */
 export type MultilingualText = {
-    [K in Language]: string;
+  [K in Language]: string;
 };
 
 /**
  * Supported color names for category badges
  */
 export type CategoryColor =
-    | "emerald"
-    | "sky"
-    | "violet"
-    | "blue"
-    | "purple"
-    | "orange"
-    | "pink"
-    | "red"
-    | "yellow"
-    | "slate";
+  | "emerald"
+  | "sky"
+  | "violet"
+  | "blue"
+  | "purple"
+  | "orange"
+  | "pink"
+  | "red"
+  | "yellow"
+  | "slate";
 
 /**
  * Category definition
  */
 export interface Category {
-    id: CourseCategory;
-    label: MultilingualText;
-    icon: JSX.Element; // React component for the icon
-    color: CategoryColor; // Color name (shade will be applied by theme)
+  id: CourseCategory;
+  label: MultilingualText;
+  icon: JSX.Element; // React component for the icon
+  color: CategoryColor; // Color name (shade will be applied by theme)
 }
 
 /**
  * Course definition
  */
 export interface Course {
-    id: string;
-    title: MultilingualText;
-    description: MultilingualText;
-    date: string;
-    duration: string;
-    iconUrl: string;
-    category: CourseCategory;
+  id: string;
+  title: MultilingualText;
+  description: MultilingualText;
+  date: string;
+  duration: string;
+  iconUrl: string;
+  category: CourseCategory;
 }
 
 export type CourseCategoryFilter = "all" | CourseCategory;
 
 export type FilterPanelState = {
-    searchQuery: string;
-    selectedCategory: CourseCategoryFilter;
-    olderFirst: boolean;
-    filterByYear: boolean;
-    sinceYear: number | null;
-    untilYear: number | null;
+  searchQuery: string;
+  selectedCategory: CourseCategoryFilter;
+  olderFirst: boolean;
+  filterByYear: boolean;
+  sinceYear: number | null;
+  untilYear: number | null;
 };

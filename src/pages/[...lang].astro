@@ -14,12 +14,12 @@ const { lang } = Astro.params;
 
 // Get current language from URL path
 const currentLanguage: Language = getCurrentLanguageFromPath(
-    Astro.url.pathname
+  Astro.url.pathname,
 );
 
 // Validate the language parameter if it exists
 if (lang && !languages.includes(lang as Language)) {
-    return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 // Get all courses from the .tsx files
@@ -37,41 +37,39 @@ const pageDescription = t("head.description");
 
 // Generate static paths for all supported languages
 export async function getStaticPaths() {
-    return [
-        // Default language route (no prefix)
-        { params: { lang: undefined } },
-        // All other language routes
-        ...languages
-            .filter((lang) => lang !== "en") // Exclude default language
-            .map((lang) => ({
-                params: { lang },
-            })),
-    ];
+  return [
+    // Default language route (no prefix)
+    { params: { lang: undefined } },
+    // All other language routes
+    ...languages
+      .filter((lang) => lang !== "en") // Exclude default language
+      .map((lang) => ({
+        params: { lang },
+      })),
+  ];
 }
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-    <CourseHero courseStats={courseStats} />
-    <CourseCatalog allCourses={courses} client:load />
+  <CourseHero courseStats={courseStats} />
+  <CourseCatalog allCourses={courses} client:load />
 
-    <!-- Invisible content for Pagefind indexing -->
-    <div class="hidden" data-pagefind-body>
-        {
-            courses.map((course) => (
-                <div
-                    data-pagefind-meta={`course_id:${course.id}`}
-                    data-pagefind-meta={`category:${course.category}`}
-                >
-                    <h2>{course.title[currentLanguage]}</h2>
-                    <p>{course.description[currentLanguage]}</p>
-                    <span data-pagefind-meta={`date:${course.date}`}>
-                        {course.date}
-                    </span>
-                    <span data-pagefind-meta={`duration:${course.duration}`}>
-                        {course.duration}
-                    </span>
-                </div>
-            ))
-        }
-    </div>
+  <!-- Invisible content for Pagefind indexing -->
+  <div class="hidden" data-pagefind-body>
+    {
+      courses.map((course) => (
+        <div
+          data-pagefind-meta={`course_id:${course.id}`}
+          data-pagefind-meta={`category:${course.category}`}
+        >
+          <h2>{course.title[currentLanguage]}</h2>
+          <p>{course.description[currentLanguage]}</p>
+          <span data-pagefind-meta={`date:${course.date}`}>{course.date}</span>
+          <span data-pagefind-meta={`duration:${course.duration}`}>
+            {course.duration}
+          </span>
+        </div>
+      ))
+    }
+  </div>
 </BaseLayout>

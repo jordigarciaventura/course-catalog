@@ -4,8 +4,8 @@ import { getLangFromUrl } from "@/i18n/utils";
 import { ThemeScript } from "astro-theme-toggle";
 
 interface Props {
-    title?: string | undefined;
-    description?: string | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
 }
 
 const { title, description } = Astro.props;
@@ -13,11 +13,11 @@ const lang = getLangFromUrl(Astro.url);
 ---
 
 <html lang={lang} class="bg-background text-foreground">
-    <head>
-        <MainHead title={title} description={description} />
-        <ThemeScript />
-    </head>
-    <body class="overscroll-y-none">
-        <slot />
-    </body>
+  <head>
+    <MainHead title={title} description={description} />
+    <ThemeScript />
+  </head>
+  <body class="overscroll-y-none">
+    <slot />
+  </body>
 </html>

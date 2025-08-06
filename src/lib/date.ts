@@ -1,14 +1,14 @@
-import { format, parse } from "date-fns";
-import { es, ca, enUS } from "date-fns/locale";
 import type { Language } from "@/types";
+import { format, parse } from "date-fns";
+import { ca, enUS, es } from "date-fns/locale";
 
 /**
  * Map language codes to date-fns locales
  */
 const localeMap = {
-    en: enUS,
-    es: es,
-    ca: ca,
+  en: enUS,
+  es: es,
+  ca: ca,
 } as const;
 
 /**
@@ -18,13 +18,13 @@ const localeMap = {
  * @returns Formatted date string (e.g., "Jan 2024", "ene 2024", "gen. 2024")
  */
 export function formatCourseDate(
-    dateString: string,
-    language: Language
+  dateString: string,
+  language: Language,
 ): string {
-    const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
-    return format(parsedDate, "MMM yyyy", {
-        locale: localeMap[language],
-    });
+  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+  return format(parsedDate, "MMM yyyy", {
+    locale: localeMap[language],
+  });
 }
 
 /**
@@ -33,5 +33,5 @@ export function formatCourseDate(
  * @returns Corresponding date-fns locale object
  */
 export function getDateLocale(language: Language) {
-    return localeMap[language];
+  return localeMap[language];
 }

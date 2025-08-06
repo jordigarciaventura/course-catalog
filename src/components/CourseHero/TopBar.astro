@@ -4,12 +4,12 @@ import { Toggle } from "astro-theme-toggle";
 import { creator } from "@/config";
 ---
 
-<div class="flex justify-between items-center w-full">
-    <p class="ml-8 text-sm sm:text-base text-white">{creator}</p>
-    <div class="flex items-center gap-6">
-        <div class="size-5 text-white">
-            <Toggle />
-        </div>
-        <LanguageSelect client:load />
+<div class="flex w-full items-center justify-between">
+  <p class="ml-8 text-sm text-white sm:text-base">{creator}</p>
+  <div class="flex items-center gap-6">
+    <div class="size-5 text-white">
+      <Toggle />
     </div>
+    <LanguageSelect client:load />
+  </div>
 </div>

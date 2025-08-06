@@ -4,16 +4,16 @@ import { APP_BASE_PATH } from "../app.config.js";
  * Course categories configuration
  */
 export const courseCategories = [
-    "data-science",
-    "cloud-devops",
-    "programming",
-    "web-development",
-    "ai-ml",
-    "databases",
-    "mobile-development",
-    "game-development",
-    "cybersecurity",
-    "software-engineering",
+  "data-science",
+  "cloud-devops",
+  "programming",
+  "web-development",
+  "ai-ml",
+  "databases",
+  "mobile-development",
+  "game-development",
+  "cybersecurity",
+  "software-engineering",
 ] as const;
 
 /**
@@ -40,15 +40,13 @@ export const creator = "Jordi García Ventura" as const;
  * @returns The complete asset URL with base path if needed
  */
 export function asset(assetPath: string): string {
-    // Remove leading slash if present
-    const cleanPath = assetPath.startsWith("/")
-        ? assetPath.slice(1)
-        : assetPath;
+  // Remove leading slash if present
+  const cleanPath = assetPath.startsWith("/") ? assetPath.slice(1) : assetPath;
 
-    // Add base path if it exists
-    if (basePath) {
-        return `${basePath}/${cleanPath}`;
-    }
+  // Add base path if it exists
+  if (basePath) {
+    return `${basePath}/${cleanPath}`;
+  }
 
-    return `/${cleanPath}`;
+  return `/${cleanPath}`;
 }

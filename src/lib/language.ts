@@ -17,7 +17,7 @@
  * - setLanguageCookie(language): Store language preference in cookies
  */
 
-import { languages, defaultLanguage, basePath } from "@/config";
+import { basePath, defaultLanguage, languages } from "@/config";
 import type { Language } from "@/types";
 
 /**
@@ -31,34 +31,31 @@ const LANGUAGE_COOKIE = "preferred-language";
  * and checking for the configured base path
  */
 function getBasePath(): string {
-    if (typeof window === "undefined") {
-        // Server-side: try to get from import.meta.env if available
-        try {
-            // This will work in Astro SSR context
-            const envBase = (import.meta.env?.BASE_URL || "").replace(
-                /\/$/,
-                ""
-            );
-            // Don't return "/" as a base path - that's the root, not a subdirectory
-            return envBase === "/" ? "" : envBase;
-        } catch {
-            return "";
-        }
+  if (typeof window === "undefined") {
+    // Server-side: try to get from import.meta.env if available
+    try {
+      // This will work in Astro SSR context
+      const envBase = (import.meta.env?.BASE_URL || "").replace(/\/$/, "");
+      // Don't return "/" as a base path - that's the root, not a subdirectory
+      return envBase === "/" ? "" : envBase;
+    } catch {
+      return "";
     }
+  }
 
-    const pathname = window.location.pathname;
+  const pathname = window.location.pathname;
 
-    // Check if the path starts with the configured base path
-    // Only consider non-root paths as base paths
-    if (
-        basePath &&
-        (basePath as string) !== "/" &&
-        pathname.startsWith(basePath)
-    ) {
-        return basePath;
-    }
+  // Check if the path starts with the configured base path
+  // Only consider non-root paths as base paths
+  if (
+    basePath &&
+    (basePath as string) !== "/" &&
+    pathname.startsWith(basePath)
+  ) {
+    return basePath;
+  }
 
-    return "";
+  return "";
 }
 
 /**
@@ -68,127 +65,127 @@ function getBasePath(): string {
  * Default language (en) has no prefix: {basePath}/... or /...
  */
 export function getCurrentLanguageFromPath(pathname?: string): Language {
-    let currentPath: string;
+  let currentPath: string;
 
-    if (pathname) {
-        // Server-side: use provided pathname
-        currentPath = pathname;
-    } else if (typeof window !== "undefined") {
-        // Client-side: use window location
-        currentPath = window.location.pathname;
-    } else {
-        // Fallback to default language
-        return defaultLanguage;
-    }
-
-    // Remove base path if present
-    const basePath = getBasePath();
-    if (basePath && currentPath.startsWith(basePath)) {
-        currentPath = currentPath.slice(basePath.length);
-    }
-
-    // Ensure path starts with /
-    if (!currentPath.startsWith("/")) {
-        currentPath = "/" + currentPath;
-    }
-
-    const pathSegments = currentPath.split("/").filter(Boolean);
-
-    // Check if first segment is a language code
-    const firstSegment = pathSegments[0];
-    if (firstSegment && languages.includes(firstSegment as Language)) {
-        return firstSegment as Language;
-    }
-
+  if (pathname) {
+    // Server-side: use provided pathname
+    currentPath = pathname;
+  } else if (typeof window !== "undefined") {
+    // Client-side: use window location
+    currentPath = window.location.pathname;
+  } else {
+    // Fallback to default language
     return defaultLanguage;
+  }
+
+  // Remove base path if present
+  const basePath = getBasePath();
+  if (basePath && currentPath.startsWith(basePath)) {
+    currentPath = currentPath.slice(basePath.length);
+  }
+
+  // Ensure path starts with /
+  if (!currentPath.startsWith("/")) {
+    currentPath = "/" + currentPath;
+  }
+
+  const pathSegments = currentPath.split("/").filter(Boolean);
+
+  // Check if first segment is a language code
+  const firstSegment = pathSegments[0];
+  if (firstSegment && languages.includes(firstSegment as Language)) {
+    return firstSegment as Language;
+  }
+
+  return defaultLanguage;
 }
 
 /**
  * Set language in cookies
  */
 export function setLanguageCookie(language: Language): void {
-    if (typeof document === "undefined") return;
+  if (typeof document === "undefined") return;
 
-    const expires = new Date();
-    expires.setFullYear(expires.getFullYear() + 1); // 1 year expiry
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 1); // 1 year expiry
 
-    // Use the base path for cookie path to ensure it works across the entire app
-    const detectedBasePath = getBasePath();
-    const cookiePath = detectedBasePath || "/";
+  // Use the base path for cookie path to ensure it works across the entire app
+  const detectedBasePath = getBasePath();
+  const cookiePath = detectedBasePath || "/";
 
-    document.cookie = `${LANGUAGE_COOKIE}=${encodeURIComponent(
-        language
-    )}; expires=${expires.toUTCString()}; path=${cookiePath}; SameSite=Lax`;
+  document.cookie = `${LANGUAGE_COOKIE}=${encodeURIComponent(
+    language,
+  )}; expires=${expires.toUTCString()}; path=${cookiePath}; SameSite=Lax`;
 }
 
 /**
  * Navigate to a different language version of the current page
  */
 export function navigateToLanguage(language: Language): void {
-    if (typeof window === "undefined") return;
+  if (typeof window === "undefined") return;
 
-    const currentPath = window.location.pathname;
-    const currentLanguage = getCurrentLanguageFromPath();
-    const detectedBasePath = getBasePath();
+  const currentPath = window.location.pathname;
+  const currentLanguage = getCurrentLanguageFromPath();
+  const detectedBasePath = getBasePath();
 
-    let newPath: string;
+  let newPath: string;
 
-    // Remove base path from current path for processing
-    let workingPath = currentPath;
-    if (detectedBasePath && workingPath.startsWith(detectedBasePath)) {
-        workingPath = workingPath.slice(detectedBasePath.length);
-    }
+  // Remove base path from current path for processing
+  let workingPath = currentPath;
+  if (detectedBasePath && workingPath.startsWith(detectedBasePath)) {
+    workingPath = workingPath.slice(detectedBasePath.length);
+  }
 
-    // Ensure working path starts with / (handle empty root path)
-    if (!workingPath.startsWith("/")) {
-        workingPath = "/" + workingPath;
-    }
+  // Ensure working path starts with / (handle empty root path)
+  if (!workingPath.startsWith("/")) {
+    workingPath = "/" + workingPath;
+  }
 
-    // Handle the case where workingPath is just "/" (root page)
-    const isRootPage = workingPath === "/" || workingPath === "";
+  // Handle the case where workingPath is just "/" (root page)
+  const isRootPage = workingPath === "/" || workingPath === "";
 
-    if (currentLanguage === defaultLanguage) {
-        // Currently on default language path
-        if (language === defaultLanguage) {
-            return; // No change needed
-        } else {
-            // Add language prefix
-            if (isRootPage) {
-                newPath = `/${language}`;
-            } else {
-                newPath = `/${language}${workingPath}`;
-            }
-        }
+  if (currentLanguage === defaultLanguage) {
+    // Currently on default language path
+    if (language === defaultLanguage) {
+      return; // No change needed
     } else {
-        // Currently on non-default language path
-        const pathWithoutLang = workingPath.replace(`/${currentLanguage}`, "");
-
-        if (language === defaultLanguage) {
-            // Remove language prefix
-            newPath = pathWithoutLang || "/";
-        } else {
-            // Replace language prefix
-            if (pathWithoutLang === "" || pathWithoutLang === "/") {
-                newPath = `/${language}`;
-            } else {
-                newPath = `/${language}${pathWithoutLang}`;
-            }
-        }
+      // Add language prefix
+      if (isRootPage) {
+        newPath = `/${language}`;
+      } else {
+        newPath = `/${language}${workingPath}`;
+      }
     }
+  } else {
+    // Currently on non-default language path
+    const pathWithoutLang = workingPath.replace(`/${currentLanguage}`, "");
 
-    // Add base path back if it exists
-    if (detectedBasePath) {
-        newPath = detectedBasePath + newPath;
+    if (language === defaultLanguage) {
+      // Remove language prefix
+      newPath = pathWithoutLang || "/";
+    } else {
+      // Replace language prefix
+      if (pathWithoutLang === "" || pathWithoutLang === "/") {
+        newPath = `/${language}`;
+      } else {
+        newPath = `/${language}${pathWithoutLang}`;
+      }
     }
+  }
 
-    // Preserve query parameters and hash
-    const queryParams = window.location.search;
-    const hash = window.location.hash;
-    const fullUrl = newPath + queryParams + hash;
+  // Add base path back if it exists
+  if (detectedBasePath) {
+    newPath = detectedBasePath + newPath;
+  }
 
-    // Set cookie before navigation
-    setLanguageCookie(language);
+  // Preserve query parameters and hash
+  const queryParams = window.location.search;
+  const hash = window.location.hash;
+  const fullUrl = newPath + queryParams + hash;
 
-    // Navigate to new path with preserved query parameters and hash
-    window.location.href = fullUrl;
+  // Set cookie before navigation
+  setLanguageCookie(language);
+
+  // Navigate to new path with preserved query parameters and hash
+  window.location.href = fullUrl;
 }

@@ -1,9 +1,9 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
-import svgr from "vite-plugin-svgr";
 import pagefind from "astro-pagefind";
+import { defineConfig } from "astro/config";
+import svgr from "vite-plugin-svgr";
 import { APP_BASE_PATH, APP_SITE_URL } from "./app.config.js";
 
 import react from "@astrojs/react";
@@ -19,11 +19,17 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       svgr({
-        include: '**/*.svg?react',
+        include: "**/*.svg?react",
         svgrOptions: {
-          plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx'],
+          plugins: ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
           svgoConfig: {
-            plugins: ['preset-default', 'removeTitle', 'removeDesc', 'removeDoctype', 'cleanupIds'],
+            plugins: [
+              "preset-default",
+              "removeTitle",
+              "removeDesc",
+              "removeDoctype",
+              "cleanupIds",
+            ],
           },
         },
       }),
