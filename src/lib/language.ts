@@ -9,7 +9,7 @@
  * - Without base path: /en/..., /es/..., /ca/...
  * - Default language (en) has no language prefix
  *
- * The base path is configured in app.config.js and can be easily changed for different deployments.
+ * The base path is configured in app.config.ts and can be easily changed for different deployments.
  *
  * Available functions:
  * - getCurrentLanguageFromPath(pathname?): Get language from URL path
