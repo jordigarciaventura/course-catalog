@@ -1,4 +1,4 @@
-import { courseCategories, languages } from "@/config";
+import { colorMap, courseCategories, languages } from "@/config";
 import type { JSX } from "react";
 
 /**
@@ -19,19 +19,9 @@ export type MultilingualText = {
 };
 
 /**
- * Supported color names for category badges
+ * Supported color names for category badges - derived from colorMap
  */
-export type CategoryColor =
-  | "emerald"
-  | "sky"
-  | "violet"
-  | "blue"
-  | "purple"
-  | "orange"
-  | "pink"
-  | "red"
-  | "yellow"
-  | "slate";
+export type CategoryColor = keyof typeof colorMap;
 
 /**
  * Category definition
