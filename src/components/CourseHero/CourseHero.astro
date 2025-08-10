@@ -15,7 +15,7 @@ const { courseStats } = Astro.props;
 
 <div
   id="header"
-  class="fixed top-0 right-0 left-0 z-10 w-full bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-4 pb-24 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900"
+  class="fixed top-0 right-0 left-0 z-10 w-full bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-600 p-4 pb-24 dark:from-slate-800 dark:via-slate-900 dark:to-indigo-950"
 >
   <TopBar />
   <Hero
@@ -28,6 +28,8 @@ const { courseStats } = Astro.props;
 <div id="header-spacer"></div>
 
 <script>
+  import { initializeHeroAnimation, refreshHeroAnimation, killHeroAnimation } from "@/scripts/heroAnimation.ts";
+
   // Keep the header spacer height in sync with the header height
 
   function synchronizeHeaderSpacer() {
@@ -40,19 +42,52 @@ const { courseStats } = Astro.props;
     }
   }
 
-  document.addEventListener("DOMContentLoaded", synchronizeHeaderSpacer);
+  function setupEventListeners() {
+    document.addEventListener("DOMContentLoaded", () => {
+      synchronizeHeaderSpacer();
+      // Small delay to ensure all elements are rendered
+      setTimeout(() => {
+        initializeHeroAnimation();
+      }, 100);
+    });
 
-  window.addEventListener("resize", synchronizeHeaderSpacer);
+    window.addEventListener("resize", () => {
+      synchronizeHeaderSpacer();
+      refreshHeroAnimation();
+    });
 
-  document.addEventListener("astro:after-swap", synchronizeHeaderSpacer);
+    document.addEventListener("astro:before-swap", () => {
+      // Clean up animations before page swap
+      killHeroAnimation();
+    });
 
-  if (typeof ResizeObserver !== "undefined") {
-    const header = document.getElementById("header");
-    if (header) {
-      const resizeObserver = new ResizeObserver(() => {
-        synchronizeHeaderSpacer();
-      });
-      resizeObserver.observe(header);
+    document.addEventListener("astro:after-swap", () => {
+      synchronizeHeaderSpacer();
+      setTimeout(() => {
+        initializeHeroAnimation();
+      }, 100);
+    });
+
+    if (typeof ResizeObserver !== "undefined") {
+      const header = document.getElementById("header");
+      if (header) {
+        const resizeObserver = new ResizeObserver(() => {
+          synchronizeHeaderSpacer();
+          refreshHeroAnimation();
+        });
+        resizeObserver.observe(header);
+      }
     }
+  }
+
+  // Initialize immediately if DOM is already loaded
+  if (document.readyState === "loading") {
+    setupEventListeners();
+  } else {
+    synchronizeHeaderSpacer();
+    setTimeout(() => {
+      initializeHeroAnimation();
+    }, 100);
+    setupEventListeners();
   }
 </script>
