@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { asset } from "@/config";
 import { useCurrentLanguage } from "@/hooks/useLanguage";
-import { formatCourseDate } from "@/lib/date";
+import { formatCourseDate, humanizeDuration } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import type { Course } from "@/types";
 import { CalendarIcon, Clock } from "lucide-react";
@@ -23,7 +23,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
 
   const title = course.title[currentLanguage];
   const description = course.description[currentLanguage];
-  const duration = course.duration;
+  const duration = humanizeDuration(course.duration, currentLanguage);
   const date = course.date;
   const category = course.category;
 
@@ -59,7 +59,7 @@ export const CourseCard: React.FC<Props> = ({ course, className }) => {
               <CalendarIcon className="size-4" aria-hidden="true" />
             </time>
             <div className="flex items-center gap-2">
-              <span>{duration}h</span>
+              <span>{duration}</span>
               <Clock className="size-4" aria-hidden="true" />
             </div>
           </div>

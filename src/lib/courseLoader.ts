@@ -8,7 +8,7 @@ async function loadAllCourseFiles(): Promise<Course[]> {
   const allCourses: Course[] = [];
 
   // Use Vite's import.meta.glob to dynamically import all course files
-  const courseModules = import.meta.glob("@/content/courses/*.tsx", {
+  const courseModules = import.meta.glob("@/content/courses/*.ts", {
     eager: false,
   });
 
