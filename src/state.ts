@@ -10,7 +10,6 @@ import type { Course, CourseCategoryFilter } from "./types";
 const URL_STATE_DEFAULTS = {
   categoryFilter: "all" as CourseCategoryFilter,
   searchQuery: "",
-  filterByYear: false,
   sinceYear: null as number | null,
   untilYear: null as number | null,
   olderFirst: false,
@@ -102,7 +101,6 @@ const queryStorage: StateStorage = {
 interface UrlState {
   categoryFilter: CourseCategoryFilter;
   searchQuery: string;
-  filterByYear: boolean;
   sinceYear: number | null;
   untilYear: number | null;
   olderFirst: boolean;
@@ -115,7 +113,6 @@ interface GlobalState extends UrlState {
   filteredAndSortedCourses: Course[];
   searchResults: Course[];
   setAllCourses: (courses: Course[]) => void;
-  setFilterByYear: (value: boolean) => void;
   setFilteredCourses: (courses: Course[]) => void;
   setSearchResults: (results: Course[]) => void;
   setCategoryFilter: (category: CourseCategoryFilter) => void;
@@ -140,7 +137,6 @@ export const useGlobalStore = create<GlobalState>()(
 
       // Persisted state (synced with URL) - will be overridden by URL state if present
       categoryFilter: URL_STATE_DEFAULTS.categoryFilter,
-      filterByYear: URL_STATE_DEFAULTS.filterByYear,
       sinceYear: URL_STATE_DEFAULTS.sinceYear,
       untilYear: URL_STATE_DEFAULTS.untilYear,
       olderFirst: URL_STATE_DEFAULTS.olderFirst,
@@ -190,10 +186,6 @@ export const useGlobalStore = create<GlobalState>()(
         set({ categoryFilter: category });
         get().updateFilteredAndSortedCourses();
       },
-      setFilterByYear: (value) => {
-        set({ filterByYear: value });
-        get().updateFilteredAndSortedCourses();
-      },
       setSinceYear: (year) => {
         set({ sinceYear: year });
         get().updateFilteredAndSortedCourses();
@@ -203,14 +195,17 @@ export const useGlobalStore = create<GlobalState>()(
         get().updateFilteredAndSortedCourses();
       },
       setOlderFirst: (value) => {
-        set({ olderFirst: value });
+        set({
+          olderFirst: value,
+          sinceYear: get().untilYear,
+          untilYear: get().sinceYear,
+        });
         get().updateFilteredAndSortedCourses();
       },
       resetFilters: () => {
         const state = get();
         set({
           categoryFilter: URL_STATE_DEFAULTS.categoryFilter,
-          filterByYear: URL_STATE_DEFAULTS.filterByYear,
           sinceYear: URL_STATE_DEFAULTS.sinceYear,
           untilYear: URL_STATE_DEFAULTS.untilYear,
           searchResults: state.allCourses,
@@ -222,9 +217,8 @@ export const useGlobalStore = create<GlobalState>()(
         const state = get();
         return (
           state.categoryFilter !== URL_STATE_DEFAULTS.categoryFilter ||
-          (state.filterByYear !== URL_STATE_DEFAULTS.filterByYear &&
-            (state.sinceYear !== URL_STATE_DEFAULTS.sinceYear ||
-              state.untilYear !== URL_STATE_DEFAULTS.untilYear)) ||
+          state.sinceYear !== URL_STATE_DEFAULTS.sinceYear ||
+          state.untilYear !== URL_STATE_DEFAULTS.untilYear ||
           state.searchQuery !== URL_STATE_DEFAULTS.searchQuery
         );
       },
@@ -243,22 +237,26 @@ export const useGlobalStore = create<GlobalState>()(
         }
 
         // Filter by year range
-        if (state.filterByYear && (state.sinceYear || state.untilYear)) {
+        if (state.sinceYear || state.untilYear) {
           filtered = filtered.filter((course) => {
             // Extract year from course date (DD/MM/YYYY format) using utility function
             const courseYear = state.getCourseYear(course.date);
 
             // Check if course year is within the selected range
             if (state.sinceYear && state.untilYear) {
-              return (
-                courseYear >= state.sinceYear && courseYear <= state.untilYear
-              );
+              return state.olderFirst
+                ? courseYear >= state.sinceYear && courseYear <= state.untilYear
+                : courseYear <= state.sinceYear &&
+                    courseYear >= state.untilYear;
             } else if (state.sinceYear) {
-              return courseYear >= state.sinceYear;
+              return state.olderFirst
+                ? courseYear >= state.sinceYear
+                : courseYear <= state.sinceYear;
             } else if (state.untilYear) {
-              return courseYear <= state.untilYear;
+              return state.olderFirst
+                ? courseYear <= state.untilYear
+                : courseYear >= state.untilYear;
             }
-
             return true;
           });
         }
@@ -297,7 +295,6 @@ export const useGlobalStore = create<GlobalState>()(
       partialize: (state): UrlState => ({
         categoryFilter: state.categoryFilter,
         searchQuery: state.searchQuery,
-        filterByYear: state.filterByYear,
         sinceYear: state.sinceYear,
         untilYear: state.untilYear,
         olderFirst: state.olderFirst,

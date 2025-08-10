@@ -17,7 +17,7 @@ export function CourseGrid() {
   );
 
   return (
-    <div className="bg-background relative z-10 mx-auto flex w-full items-center pt-8">
+    <div className="bg-background relative z-10 mx-auto flex w-full items-center pt-0">
       {filteredAndSortedCourses.length === 0 ? (
         <div
           className="mx-auto flex h-full flex-col items-center justify-center gap-6 p-8 text-center"

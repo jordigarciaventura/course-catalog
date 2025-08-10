@@ -28,8 +28,8 @@ export function getHeroStats(courses: Course[]) {
 export function getYearRange(courses: Course[]) {
   if (courses.length === 0) {
     return {
-      minYear: undefined,
-      maxYear: undefined,
+      minYear: 0,
+      maxYear: 0,
     };
   }
 

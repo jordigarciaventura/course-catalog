@@ -32,7 +32,7 @@ export function CategorySelect({ className }: Props) {
   }, []);
 
   if (isLoading) {
-    return <Skeleton className={cn("h-9 w-[200px]", className)} />;
+    return <Skeleton className={cn("h-9", className)} />;
   }
 
   return (
@@ -42,7 +42,7 @@ export function CategorySelect({ className }: Props) {
         setCategoryFilter(value as CourseCategoryFilter)
       }
     >
-      <SelectTrigger className={cn("w-[200px] cursor-pointer", className)}>
+      <SelectTrigger className={cn("cursor-pointer", className)}>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

@@ -1,5 +1,6 @@
 import { CourseFilterPanel } from "@/components/CourseCatalog/CourseFilterPanel/CourseFilterPanel";
 import { CourseGrid } from "@/components/CourseCatalog/CourseGrid/CourseGrid";
+import { ResultsSummary } from "@/components/CourseCatalog/ResultsSummary";
 import { useGlobalStore } from "@/state";
 import type { Course } from "@/types";
 import { useEffect } from "react";
@@ -16,6 +17,7 @@ export function CourseCatalog({ allCourses }: Props) {
   return (
     <div className="sticky top-0 left-0 z-20">
       <CourseFilterPanel />
+      <ResultsSummary />
       <CourseGrid />
     </div>
   );
