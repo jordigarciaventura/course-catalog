@@ -52,7 +52,7 @@ export async function getStaticPaths() {
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <CourseHero courseStats={courseStats} />
-  <CourseCatalog allCourses={courses} client:load />
+  <CourseCatalog allCourses={courses} client:only />
 
   <!-- Invisible content for Pagefind indexing -->
   <div class="hidden" data-pagefind-body>
