@@ -14,7 +14,8 @@ export default defineConfig({
   // Choose deployment configuration:
   // For root deployment: use base: "/"
   // For subdirectory deployment: use base: APP_BASE_PATH
-  base: APP_BASE_PATH || "/",
+  base: APP_BASE_PATH,
+  outDir: `dist${APP_BASE_PATH}`,
   vite: {
     plugins: [
       tailwindcss(),
