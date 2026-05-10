@@ -7,8 +7,6 @@ import svgr from "vite-plugin-svgr";
 import react from "@astrojs/react";
 import { APP_BASE_PATH, APP_SITE_URL } from "./app.config.js";
 
-import cloudflare from "@astrojs/cloudflare";
-
 // https://astro.build/config
 export default defineConfig({
   site: APP_SITE_URL,
@@ -42,5 +40,4 @@ export default defineConfig({
   },
 
   integrations: [react(), icon(), pagefind()],
-  adapter: cloudflare()
 });
