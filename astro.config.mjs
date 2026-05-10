@@ -16,8 +16,6 @@ export default defineConfig({
   // For subdirectory deployment: use base: APP_BASE_PATH
   base: APP_BASE_PATH,
 
-  outDir: `dist${APP_BASE_PATH}`,
-
   vite: {
     plugins: [
       tailwindcss(),
