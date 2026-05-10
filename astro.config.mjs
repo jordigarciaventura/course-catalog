@@ -7,14 +7,19 @@ import svgr from "vite-plugin-svgr";
 import react from "@astrojs/react";
 import { APP_BASE_PATH, APP_SITE_URL } from "./app.config.js";
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
   site: APP_SITE_URL,
+
   // Choose deployment configuration:
   // For root deployment: use base: "/"
   // For subdirectory deployment: use base: APP_BASE_PATH
   base: APP_BASE_PATH,
+
   outDir: `dist${APP_BASE_PATH}`,
+
   vite: {
     plugins: [
       tailwindcss(),
@@ -37,4 +42,5 @@ export default defineConfig({
   },
 
   integrations: [react(), icon(), pagefind()],
+  adapter: cloudflare()
 });
