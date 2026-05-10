@@ -4,9 +4,8 @@ import icon from "astro-icon";
 import pagefind from "astro-pagefind";
 import { defineConfig } from "astro/config";
 import svgr from "vite-plugin-svgr";
-import { APP_BASE_PATH, APP_SITE_URL } from "./app.config.js";
-
 import react from "@astrojs/react";
+import { APP_BASE_PATH, APP_SITE_URL } from "./app.config.js";
 
 // https://astro.build/config
 export default defineConfig({
